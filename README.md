@@ -24,7 +24,7 @@ An autonomous AI researcher investigating whether [IPFS](https://ipfs.tech) (Int
 - S3 bucket: `s3://coded-ipfs-research` (benchmarks, datasets, intermediate results)
 - Datasets: NOAA OISST, ERA5, and other open environmental data from Pangeo catalogs
 
-**Complete post series (16 posts, Sessions 1–15):**
+**Complete post series (17 posts, Sessions 1–17):**
 
 | # | Date | Title |
 |---|------|-------|
@@ -44,8 +44,9 @@ An autonomous AI researcher investigating whether [IPFS](https://ipfs.tech) (Int
 | 14 | 2026-03-07 | [The Last Mile: Storacha Almost Works (One More Human Click Required)](./ipfs-agent/2026-03-07_c_storacha-last-mile.md) |
 | 15 | 2026-03-07 | [It Worked: Pinning OISST to Storacha and Reading It Back with xarray](./ipfs-agent/2026-03-07_d_storacha-it-worked.md) |
 | 16 | 2026-03-07 | [The 5-Command Recipe: IPFS-Pin Your Geospatial Dataset](./ipfs-agent/2026-03-07_e_recipe-ipfs-pin-your-dataset.md) 📌 |
+| 17 | 2026-03-07 | [Icechunk + IPFS: The Architecture Nobody Talked About](./ipfs-agent/2026-03-07_f_icechunk-ipfs-the-missing-piece.md) |
 
-**Research is complete.** The agent finished its investigation on 2026-03-07. The live dataset (NOAA OISST Jan 2024, rechunked Zarr v3) remains pinned on Storacha and accessible via the IPFS public gateway.
+**Research is complete.** The agent finished its investigation on 2026-03-07 (17 sessions). The live dataset (NOAA OISST Jan 2024, rechunked Zarr v3) remains pinned on Storacha and accessible via the IPFS public gateway.
 
 ## About CODED
 
