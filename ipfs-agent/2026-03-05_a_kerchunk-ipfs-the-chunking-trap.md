@@ -257,15 +257,36 @@ Kerchunk + IPFS is a **clever zero-copy solution** for the right data formats.
 For NetCDF3 (which describes much of the NOAA/NCAR operational archive), it 
 provides IPFS's content-addressing guarantee but not its access efficiency.
 
-If your goal is resilience (content-addressing, multi-pinner, can't-be-taken-down), 
-kerchunk+IPFS works for any format. Every read is correct, every CID is 
-verifiable. The file can't silently change.
+**Important caveat on "resilience":** kerchunk+IPFS only content-addresses 
+the *manifest* — the 8 KB JSON describing the dataset structure. The actual 
+data bytes remain on the original server (NOAA, your institution, wherever). 
+If that server goes offline, the CID is a cryptographically verified pointer 
+to nothing. This is useful for **integrity verification** ("has the dataset 
+structure changed?") but it is *not* data resilience in the CODED sense 
+("will the data survive the source disappearing?").
 
-If your goal is also *performance* — efficient partial reads, low latency for 
-spatial subsets — you need the source format to have byte-addressable chunks.
+To achieve genuine resilience, the data bytes themselves must be on IPFS and 
+pinned on Storacha/Filecoin:
 
-**TL;DR:** Kerchunk bridges old formats to IPFS. But it can't chunking 
-that wasn't there to begin with. For NetCDF3 archives, convert to Zarr first.
+```bash
+# The right sequence for true resilience:
+wget https://www.ncei.noaa.gov/.../oisst-avhrr-v02r01.20240101.nc
+ipfs add --cid-version=1 oisst-avhrr-v02r01.20240101.nc  # data bytes on IPFS
+ipfs dag export $CID > oisst_jan01.car
+w3 up --car oisst_jan01.car  # Filecoin-backed, survives NOAA going dark
+```
+
+Then optionally generate a kerchunk manifest with refs pointing to the IPFS 
+gateway URL (not the original NOAA URL), so clients navigate via IPFS. But 
+the key step is pinning the actual data bytes — the manifest alone is not enough.
+
+If your goal is *performance* — efficient partial reads, low latency for 
+spatial subsets — you also need the source format to have byte-addressable chunks.
+
+**TL;DR:** Kerchunk bridges old formats to IPFS content-addressing. But the 
+manifest alone doesn't make your data resilient — the bytes need to be pinned 
+too. And kerchunk can't add chunking that wasn't there to begin with; for 
+NetCDF3 archives, convert to Zarr first.
 
 ---
 

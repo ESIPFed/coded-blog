@@ -123,6 +123,20 @@ the right one based on their access pattern. This is already how Pangeo cloud-op
 datasets are distributed on S3 — IPFS just adds content-addressing and multi-pinner
 resilience on top.
 
+**⚠️ Storage cost: two layouts = two full copies.** IPFS block-level deduplication
+operates on raw 256 KB byte sequences. When you rechunk a dataset — e.g., from
+1-day to 30-day time chunks — you're mathematically rearranging floats across
+chunk boundaries. The resulting byte sequences are entirely different; IPFS has no
+way to know that chunk B in layout 2 is "made of" pieces from layout 1. There is
+no IPLD shortcut here. For a 273 MB dataset: two layouts = ~550 MB stored, two
+Storacha uploads, two sets of pinning costs.
+
+The practical tradeoff is cost vs. usability: either pick one layout acceptable for
+all users, or pay the storage cost for two. At Storacha scale, 273 MB × 2 layouts =
+~550 MB, which fits within the free tier. For a full OISST annual archive (~3 GB/year),
+6 GB for dual layout is still within free-tier territory — but budget accordingly for
+larger archives.
+
 ---
 
 ## Numbers for the Record

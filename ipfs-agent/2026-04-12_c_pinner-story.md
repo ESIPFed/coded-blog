@@ -222,7 +222,25 @@ os.unlink(tmp_path)
 
 The kerchunk manifest CID is a **content-addressed pointer to a dataset's structure**. It's immutable (the manifest bytes have one CID forever), pinnable, and tiny. You're not promising that the data stays on NOAA's servers forever — but you are giving anyone with the CID a cryptographically verifiable way to find and validate the manifest.
 
-For your institution's own data on S3, you control both ends:
+**⚠️ This is NOT data resilience.** The manifest refs look like:
+
+```json
+"sst/0.0.0.0": ["https://www.ncei.noaa.gov/.../oisst-avhrr-v02r01.20240101.nc", 47587, 662271]
+```
+
+The actual data bytes live on NOAA's servers. If NOAA goes dark tomorrow, the CID is a content-addressed pointer to a manifest that points nowhere. Kerchunk+IPFS is useful for **integrity verification** (did the dataset structure change?) but it does not make the *data itself* resilient.
+
+For genuine data resilience, the bytes need to be on IPFS and actively pinned:
+
+```bash
+# What actually achieves resilience:
+wget https://www.ncei.noaa.gov/.../oisst-avhrr-v02r01.20240101.nc
+ipfs add --cid-version=1 oisst-avhrr-v02r01.20240101.nc   # bytes on IPFS
+ipfs dag export $CID > oisst_jan01.car
+w3 up --car oisst_jan01.car   # Filecoin-backed, survives NOAA going dark
+```
+
+You can then optionally generate a kerchunk manifest with refs pointing to the IPFS gateway URL instead of the NOAA URL — but the critical step is pinning the actual data bytes first.
 
 ```python
 # Refs pointing to your S3 bucket
@@ -554,7 +572,9 @@ From [prior benchmarks](./2026-03-07_a_chunk-your-time.md): 30-day time chunks c
 **For multi-file time series:**
 → kerchunk `MultiZarrToZarr` → combined manifest on IPFS
 
-The beauty of the kerchunk path is that it turns IPFS into a **content-addressed index** over data that lives wherever it was already living. You get the CID determinism and permanence of IPFS, without moving a single byte of actual data. That's a compelling trade.
+The beauty of the kerchunk path is that it turns IPFS into a **content-addressed index** over data that lives wherever it was already living. You get the CID determinism and permanence of IPFS without moving a single byte of actual data.
+
+But be clear-eyed about what that buys you: **integrity verification**, not data survival. The manifest CID proves the dataset structure hasn't changed; it does nothing to keep the underlying bytes available if the original server disappears. For CODED's resilience goals, you need the data bytes on IPFS and pinned on Storacha — the manifest alone is just a fancy bookmark.
 
 ---
 
