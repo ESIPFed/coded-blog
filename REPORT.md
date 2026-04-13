@@ -138,6 +138,8 @@ IPFS amplifies the standard Zarr chunking tradeoffs because every chunk requires
 
 **Recommendation:** Publish two CID profiles per dataset — time-optimized `(30, 180, 360)` and space-optimized `(1, 90, 90)` — referenced from a STAC item with different `roles`.
 
+**⚠️ Storage cost: two layouts = two full data copies.** IPFS block-level deduplication operates on raw 256 KB byte sequences. Rechunking rearranges floats across chunk boundaries, producing entirely different byte sequences — IPFS has no way to know that layout B was derived from layout A. There is no IPLD shortcut. For a 430 MB dataset: two layouts ≈ 860 MB stored, two Storacha uploads. This fits within the free tier for OISST scale, but budget accordingly for larger archives.
+
 ---
 
 ### 3.6 CAR Files: The Transfer Primitive
@@ -170,9 +172,33 @@ Old CIDs remain accessible permanently after updates — free, automatic version
 
 ---
 
-### 3.8 Kerchunk + IPFS
+### 3.8 Kerchunk + IPFS: Integrity Verification, Not Data Resilience
 
 Works for formats with internal chunking (HDF5/NetCDF4, GRIB2, COG). **Fails** for NetCDF3: entire variable = one 29MB block = every query fetches 29MB regardless of subset size.
+
+**Critical distinction:** pinning a kerchunk manifest on IPFS content-addresses the *dataset structure* — it does not make the *data* resilient. A manifest CID contains refs like:
+
+```json
+"sst/0.0.0.0": ["https://www.ncei.noaa.gov/.../oisst-avhrr-v02r01.20240101.nc", 47587, 662271]
+```
+
+The actual bytes live on NOAA's server. If that server goes offline, the CID is a cryptographically verified pointer to nothing. This pattern is useful for **integrity verification** ("has the dataset structure changed?") but is **not a CODED-style resilience solution**.
+
+For genuine data survival, pin the actual data bytes:
+
+```bash
+# ✅ The right sequence for resilience:
+wget https://www.ncei.noaa.gov/.../oisst-avhrr-v02r01.20240101.nc
+ipfs add --cid-version=1 oisst-avhrr-v02r01.20240101.nc   # bytes on IPFS
+ipfs dag export $CID > oisst_jan01.car
+w3 up --car oisst_jan01.car   # Filecoin-backed, survives NOAA going dark
+
+# Optionally: generate kerchunk manifest with refs pointing to IPFS gateway URL
+# (not the original NOAA URL) so clients navigate via IPFS.
+# But pinning the bytes is the mandatory first step.
+```
+
+Kerchunk-manifest-only on IPFS has one legitimate use: institutions that control neither the hosting infrastructure nor the data format, and simply want to publish a content-addressed description of an existing dataset's structure. It is not the CODED use case.
 
 ---
 
@@ -309,6 +335,8 @@ print(ds)
 | `w3s.link` path gateway needed | Low | Use `w3s.link/ipfs/<CID>` not subdomain form for Zarr |
 | Storacha free tier: 5 GB | Medium | 3GB dataset fits; larger needs paid tier |
 | NetCDF3 kerchunk on IPFS: 29MB per any query | High | Rechunk to Zarr first |
+| Kerchunk manifest-only on IPFS: data still on original server | **Critical** | Pin actual data bytes with `ipfs add` + `w3 up --car`; manifest CID ≠ resilience |
+| Dual-layout (time + space CID profiles): two full data copies | Medium | No IPLD shortcut exists; budget 2× storage; both fit free tier at OISST scale |
 
 ---
 
