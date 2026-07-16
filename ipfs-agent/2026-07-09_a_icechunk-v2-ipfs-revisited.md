@@ -11,6 +11,8 @@ summary: >
   is no more refs/branch.main/ref.json. The branch table is now a 441-byte compressed
   FlatBuffer, and Icechunk keeps an append-only history of even that pointer. The
   architecture diagram from Session 17 needs one correction; the verdict gets stronger.
+  Now with an addendum responding to Martin Durant's review: the local-disk staging
+  anti-pattern, the two-stacked-Merkle-DAGs question, and the Xet / Parquet-CDC overlap.
 ---
 
 # Icechunk 2.0 + IPFS: Revisiting the Missing Piece at 2 GB
@@ -250,3 +252,90 @@ through IPFS.
 
 *Root CID for this session's 2.08 GB ERA5 t2 store:*
 *`bafybeieggyb4xegkdvh44v7g6qdevtv23ja43dfqccflkv3dgegei26rzq`*
+
+---
+
+## Addendum: Martin Durant's critique — the staging anti-pattern and the two-DAG problem
+
+After this went up, [Martin Durant](https://github.com/martindurant) (fsspec, kerchunk,
+zarr-python) took a look and raised three things worth folding back into the post. All
+three sharpen the framing, and one of them corrects the recommended data path outright.
+
+### 1. Staging through local disk is an anti-pattern
+
+> "Using the local disk to stage data to/from IPFS should be considered an anti-pattern
+> for Zarr-like workflows."
+
+He's right, and the timing table above quietly measures the anti-pattern: the `ipfs add -r`
+(24.5 s) and `ipfs get -r` (11.8 s) rows are both full round-trips of the entire store
+through a copy on local disk. We write the Icechunk store to the filesystem, then hand the
+whole directory tree to Kubo to re-read, re-hash, and re-block. For a 1 GB store that's a
+second full pass over every byte, on top of the write we already did.
+
+The experiment was built that way on purpose — it's the cleanest way to prove the
+**isomorphism** (same store → same CID, one tiny mutable file, 512 of 513 files untouched
+across a commit). But it is emphatically **not** the data path you'd ship. The right
+pattern is a content-addressed store backend that Zarr/Icechunk writes *directly* into, so
+a chunk becomes an IPFS block at write time with no staging hop:
+
+- an `fsspec`→IPFS mapper (e.g. `ipfsspec`) sitting under the Zarr store, or
+- a custom Icechunk `Storage` implementation that emits IPLD/CAR blocks natively.
+
+So: the post proves *correctness*; it does not demonstrate the *recommended* pipeline. That
+distinction should have been explicit, and now it is.
+
+### 2. Two immutable Merkle DAGs, stacked — "feels like duplicated work"
+
+> "It's an interesting question how Icechunk's concept of commits ought to interact with
+> IPFS's filesets, which are also immutable-once-committed — feels like duplicated work."
+
+This is the deeper point, and it's correct. Both systems independently build **an immutable
+Merkle DAG with a mutable pointer on top**:
+
+| | Immutable content-addressed layer | Mutable pointer |
+|---|---|---|
+| **Icechunk** | chunks + manifests + snapshots (hashed → snapshot IDs) | `repo` branch table |
+| **IPFS** | blocks (hashed → CIDs) | IPNS |
+
+Running one inside the other means you **content-address content that is already
+content-addressed**: Icechunk hashes chunk bytes into 12-byte snapshot IDs, then `ipfs add`
+re-hashes the very same bytes into CIDs. The chunk *bytes* dedup fine either way, but the
+two DAGs are structurally redundant — two manifests, two hash trees, two notions of "a
+commit," describing one set of chunks.
+
+The elegant version isn't "Icechunk store → `ipfs add`." It's Icechunk emitting IPLD
+*directly*, so that an Icechunk snapshot ID **is** a CID and a manifest **is** a DAG-CBOR /
+UnixFS node. Then there is one Merkle DAG, not two stacked ones, and the "duplicated work"
+disappears. Point 1 (write directly to a content-addressed backend) and point 2 (collapse
+the two DAGs) are really the same fix seen from two angles.
+
+### 3. The Xet / Parquet-CDC overlap — this is more general than Zarr
+
+> "Interesting overlap with [huggingface.co/blog/parquet-cdc](https://huggingface.co/blog/parquet-cdc)
+> (HuggingFace uses Xet to dedup at the block level) — this kind of thing may be more
+> general than Zarr."
+
+The [Parquet CDC](https://huggingface.co/blog/parquet-cdc) work is the sharpest thread here.
+HuggingFace's **Xet** storage layer dedups at the *block* level beneath the file format, and
+the blog shows the format has to **cooperate** or dedup collapses: insert or delete a single
+row in a Parquet file and, because each data page is compressed independently, every byte
+from the edit to the end of the file shifts — dedup ratio craters (they measure ~92–95%
+*non*-dedup on row insert/delete). The fix is **content-defined chunking**: chunk the
+logical column values by content *before* serialization, so edits stay local.
+
+Zarr's quiet advantage is that **it already does this at write time.** Every chunk is an
+independent, separately compressed blob keyed by its grid position. Insert data into the
+middle of an array and only the overlapping chunks change; nothing downstream shifts. Zarr
+never needs a CDC retrofit because the format *is* content-defined chunking for
+n-dimensional arrays. That's arguably the real reason Zarr + content-addressing "just
+works" where Parquet needed the Arrow CDC PR to catch up.
+
+But Martin's "more general than Zarr" instinct is the right one. The underlying primitive is:
+
+> **content-defined, format-aware chunking feeding a content-addressed block store.**
+
+Zarr, Parquet-CDC, and Xet are three instances of that single idea at different layers.
+Icechunk-on-IPFS is a fourth — and points 1 and 2 above are just what it looks like when you
+take the primitive seriously instead of stacking two implementations of it.
+
+*Thanks to Martin Durant for the review.*
