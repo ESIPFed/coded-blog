@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  /* ESIP Summer Meeting poster — 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
+  @page { size: 36in 48in; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 3456px; height: 4608px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #1a2733;
+    background: #f4f7f9;
+  }
+  .poster {
+    width: 3456px; height: 4608px;
+    padding: 130px 130px 120px;
+    display: flex; flex-direction: column;
+    background:
+      radial-gradient(circle at 12% 4%, rgba(0,120,180,0.10), transparent 40%),
+      radial-gradient(circle at 90% 2%, rgba(0,160,140,0.10), transparent 38%),
+      #f4f7f9;
+  }
+
+  /* ---------- HEADER ---------- */
+  header {
+    border-bottom: 14px solid #0a6ea3;
+    padding-bottom: 60px; margin-bottom: 66px;
+  }
+  .kicker {
+    font-size: 46px; letter-spacing: 6px; font-weight: 700;
+    color: #0a6ea3; text-transform: uppercase; margin-bottom: 22px;
+  }
+  h1 {
+    font-size: 124px; line-height: 1.03; font-weight: 800;
+    color: #0b2a3d; letter-spacing: -2px;
+  }
+  h1 .accent { color: #0a6ea3; }
+  .subtitle {
+    font-size: 56px; font-weight: 400; color: #34536b;
+    margin-top: 30px; line-height: 1.25;
+  }
+  .authors {
+    margin-top: 40px; font-size: 50px; color: #1a2733; font-weight: 600;
+  }
+  .affil { font-size: 40px; color: #5a7184; font-weight: 400; margin-top: 12px; }
+  .ff-badge {
+    display: inline-block; margin-top: 38px;
+    background: #ffb524; color: #5a3c00;
+    font-size: 42px; font-weight: 800; letter-spacing: 1px;
+    padding: 20px 44px; border-radius: 14px;
+  }
+
+  /* ---------- BODY GRID ---------- */
+  .body {
+    flex: 1; display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 66px;
+    margin-top: 16px;
+  }
+  .col { display: flex; flex-direction: column; gap: 66px; }
+
+  .card {
+    background: #ffffff; border-radius: 26px;
+    padding: 72px 74px;
+    box-shadow: 0 14px 40px rgba(11,42,61,0.10);
+    border-top: 12px solid #0a6ea3;
+  }
+  .card.teal { border-top-color: #00a08c; }
+  .card.amber { border-top-color: #ffb524; }
+  .card h2 {
+    font-size: 76px; font-weight: 800; color: #0b2a3d;
+    margin-bottom: 38px; letter-spacing: -1px;
+  }
+  .card p, .card li {
+    font-size: 48px; line-height: 1.5; color: #25404f;
+  }
+  .card p + p { margin-top: 34px; }
+  ul { padding-left: 56px; }
+  li { margin-bottom: 32px; }
+  .lead { font-size: 52px; line-height: 1.48; }
+  code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em; background:#eef3f6; padding: 2px 12px; border-radius: 8px; }
+
+  /* ---------- TABLE ---------- */
+  table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+  th, td {
+    font-size: 44px; text-align: left;
+    padding: 28px 22px; border-bottom: 3px solid #dde6ec;
+  }
+  th {
+    background: #eaf3f8; color: #0b2a3d; font-weight: 800;
+    font-size: 42px;
+  }
+  td.win { color: #1b8a3a; font-weight: 800; }
+  td.s3 { color: #0a6ea3; font-weight: 800; }
+  td.slow { color: #b3261e; font-weight: 800; }
+  caption {
+    caption-side: bottom; font-size: 36px; color: #5a7184;
+    text-align: left; margin-top: 22px; line-height: 1.35; font-style: italic;
+  }
+
+  .bignum {
+    display: flex; gap: 46px; margin-top: 18px; flex-wrap: wrap;
+  }
+  .stat {
+    flex: 1; min-width: 340px; text-align: center;
+    background: #f0f7fa; border-radius: 20px; padding: 44px 30px;
+  }
+  .stat .n { font-size: 104px; font-weight: 800; color: #0a6ea3; line-height: 1; }
+  .stat.red .n { color: #b3261e; }
+  .stat.green .n { color: #1b8a3a; }
+  .stat .l { font-size: 37px; color: #34536b; margin-top: 18px; line-height: 1.3; }
+
+  .takeaway {
+    background: linear-gradient(135deg, #0a6ea3, #00a08c);
+    color: #fff; border-radius: 26px; padding: 80px 84px;
+    box-shadow: 0 14px 40px rgba(11,42,61,0.18); border-top: none;
+  }
+  .takeaway h2 { color: #fff; }
+  .takeaway p { color: #eaf6fb; font-size: 54px; line-height: 1.46; }
+  .takeaway p + p { margin-top: 34px; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    margin-top: 64px; border-top: 6px solid #cdd9e0;
+    padding-top: 42px; display: flex; justify-content: space-between;
+    align-items: center; font-size: 42px; color: #5a7184;
+  }
+  footer .repo { font-weight: 700; color: #0a6ea3; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="kicker">ESIP Summer Meeting 2026 &nbsp;•&nbsp; Austin, Texas</div>
+    <h1><span class="accent">CODED</span> — Cloud-Optimized<br>Distributed Earth Data</h1>
+    <div class="subtitle">Benchmarking <span style="color:#0a6ea3;font-weight:600;">IPFS</span> as a resilience layer for cloud-optimized geospatial data (Zarr · Icechunk · xarray)</div>
+    <div class="authors">Cory Levinson &nbsp;·&nbsp; Rich Signell &nbsp;·&nbsp; Brian Terry</div>
+    <div class="ff-badge">★ An ESIP Funding Friday Project</div>
+  </header>
+
+  <div class="body">
+
+    <!-- LEFT COLUMN -->
+    <div class="col left">
+
+      <div class="card amber">
+        <h2>Objective</h2>
+        <p class="lead">Decentralized storage networks like <b>IPFS</b> have offered content-addressed, location-independent data access for over a decade. Meanwhile the geoscience community has converged on <b>cloud-optimized formats</b> — Zarr, and now Icechunk — that make huge environmental datasets readable through efficient chunk-level range requests.</p>
+        <p style="font-weight:800; color:#0b2a3d; font-size:52px;">CODED asks one practical question: can IPFS serve as a <span style="color:#00a08c;">resiliency layer</span> for cloud-optimized geospatial data — and what are the real <span style="color:#0a6ea3;">performance trade-offs</span>?</p>
+      </div>
+
+      <div class="card teal">
+        <h2>Approach</h2>
+        <ul>
+          <li>Published a <b>500-hour ERA5 2-m air-temperature</b> slice (2.08&nbsp;GB logical, 500 Zarr chunks) to IPFS via Kubo.</li>
+          <li><code>xarray.open_zarr()</code> reads directly over an IPFS gateway — <b>no code changes</b>, just point at the CID.</li>
+          <li>Benchmarked the <b>identical dataset</b> three ways: Icechunk on S3, IPFS HTTP gateway, and a local IPFS daemon over Bitswap.</li>
+          <li>All three return a <b>bit-identical</b> result (area-weighted mean = <b>286.5062&nbsp;K</b>) — verifying correctness alongside speed.</li>
+        </ul>
+      </div>
+
+      <div class="takeaway">
+        <h2>Bottom Line</h2>
+        <p><b>IPFS works as a resilience layer — and the access path is everything.</b> An HTTP gateway co-located with the data delivers S3-class throughput (even beating native S3 here).</p>
+        <p>But cold peer-to-peer <b>Bitswap</b> replication across a high-latency link is glacial. Front your IPFS node with a regional gateway, and content-addressing buys you verifiable, takedown-resistant data either way.</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col right">
+
+      <div class="card">
+        <h2>The Singapore Test</h2>
+        <p class="lead">To stress the network path, a fresh client in <b>Singapore</b> (<code>ap-southeast-1</code>, ~221&nbsp;ms RTT) read the full 2.08&nbsp;GB field from three back-ends served in <b>us-east-1</b>.</p>
+        <table>
+          <thead>
+            <tr><th>Backend (cold read)</th><th>Time</th><th>Throughput</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>IPFS HTTP gateway</td><td class="win">12.5 s</td><td class="win">166.6 MB/s</td></tr>
+            <tr><td>Icechunk on S3</td><td class="s3">18.4 s</td><td class="s3">112.8 MB/s</td></tr>
+            <tr><td>IPFS local daemon (Bitswap)</td><td class="slow">655 s</td><td class="slow">3.2 MB/s</td></tr>
+          </tbody>
+          <caption>Full 2.08&nbsp;GB cold read, Singapore → us-east-1. The co-located IPFS gateway beat native S3 by ~50%; cold Bitswap was ~52× slower than the gateway.</caption>
+        </table>
+        <div class="bignum">
+          <div class="stat green"><div class="n">1.5×</div><div class="l">IPFS gateway<br>faster than S3</div></div>
+          <div class="stat red"><div class="n">52×</div><div class="l">cold Bitswap slower<br>than the gateway</div></div>
+        </div>
+      </div>
+
+      <div class="card teal">
+        <h2>Tuning Bitswap</h2>
+        <p>Raising the Kubo chunker from 1&nbsp;MiB to the 2&nbsp;MiB ceiling cut blocks-per-chunk from 4&nbsp;→&nbsp;3, reducing Bitswap round-trips over the Pacific link.</p>
+        <div class="bignum">
+          <div class="stat green"><div class="n">655→312s</div><div class="l">cold Bitswap read<br>after chunker tuning</div></div>
+          <div class="stat"><div class="n">2.1×</div><div class="l">speedup on the<br>P2P path</div></div>
+        </div>
+        <p style="margin-top:34px; font-size:44px;">Even so, Bitswap stayed ~23× behind the HTTP gateway — the gap is session-management overhead, not block size.</p>
+      </div>
+
+      <div class="card amber">
+        <h2>What This Means</h2>
+        <ul>
+          <li><b>Gateways win for consumers.</b> Reading through any HTTP gateway in the data's region gives S3-class (or better) throughput with zero code changes.</li>
+          <li><b>Cold P2P replication is slow</b> over high-RTT links with a single peer — budget ~1&nbsp;MB/s; more peers and tuning help.</li>
+          <li><b>Resilience holds regardless.</b> Content-addressing + pinning keeps datasets verifiable and alive as nodes come and go.</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <div>CODED &nbsp;·&nbsp; An ESIP Funding Friday Project &nbsp;·&nbsp; Cory Levinson, Rich Signell &amp; Brian Terry</div>
+    <div class="repo">github.com/ESIPFed/coded-blog</div>
+  </footer>
+
+</div>
+</body>
+</html>

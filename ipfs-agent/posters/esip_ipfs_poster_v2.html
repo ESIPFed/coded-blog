@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  /* ESIP Summer Meeting poster v2 — 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
+  @page { size: 36in 48in; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 3456px; height: 4608px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #1a2733;
+    background: #f4f7f9;
+  }
+  .poster {
+    width: 3456px; height: 4608px;
+    padding: 120px 120px 110px;
+    display: flex; flex-direction: column;
+    background:
+      radial-gradient(circle at 12% 4%, rgba(0,120,180,0.10), transparent 40%),
+      radial-gradient(circle at 90% 2%, rgba(0,160,140,0.10), transparent 38%),
+      #f4f7f9;
+  }
+
+  /* ---------- HEADER ---------- */
+  header {
+    border-bottom: 14px solid #0a6ea3;
+    padding-bottom: 52px; margin-bottom: 56px;
+  }
+  .kicker {
+    font-size: 46px; letter-spacing: 6px; font-weight: 700;
+    color: #0a6ea3; text-transform: uppercase; margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 118px; line-height: 1.03; font-weight: 800;
+    color: #0b2a3d; letter-spacing: -2px;
+  }
+  h1 .accent { color: #0a6ea3; }
+  .subtitle {
+    font-size: 54px; font-weight: 400; color: #34536b;
+    margin-top: 28px; line-height: 1.25;
+  }
+  .authors {
+    margin-top: 36px; font-size: 50px; color: #1a2733; font-weight: 600;
+  }
+  .ff-badge {
+    display: inline-block; margin-top: 34px;
+    background: #ffb524; color: #5a3c00;
+    font-size: 42px; font-weight: 800; letter-spacing: 1px;
+    padding: 18px 42px; border-radius: 14px;
+  }
+
+  /* ---------- BODY GRID ---------- */
+  .body {
+    flex: 1; display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 56px;
+    margin-top: 14px;
+  }
+  .col { display: flex; flex-direction: column; gap: 56px; }
+
+  .card {
+    background: #ffffff; border-radius: 26px;
+    padding: 62px 66px;
+    box-shadow: 0 14px 40px rgba(11,42,61,0.10);
+    border-top: 12px solid #0a6ea3;
+  }
+  .card.teal { border-top-color: #00a08c; }
+  .card.amber { border-top-color: #ffb524; }
+  .card h2 {
+    font-size: 72px; font-weight: 800; color: #0b2a3d;
+    margin-bottom: 32px; letter-spacing: -1px;
+  }
+  .card p, .card li {
+    font-size: 46px; line-height: 1.46; color: #25404f;
+  }
+  .card p + p { margin-top: 30px; }
+  ul { padding-left: 54px; }
+  li { margin-bottom: 28px; }
+  .lead { font-size: 50px; line-height: 1.44; }
+  code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; background:#eef3f6; padding: 2px 12px; border-radius: 8px; }
+
+  /* ---------- TABLE ---------- */
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  th, td {
+    font-size: 42px; text-align: left;
+    padding: 24px 20px; border-bottom: 3px solid #dde6ec;
+  }
+  th {
+    background: #eaf3f8; color: #0b2a3d; font-weight: 800;
+    font-size: 40px;
+  }
+  td.win { color: #1b8a3a; font-weight: 800; }
+  td.s3 { color: #0a6ea3; font-weight: 800; }
+  td.slow { color: #b3261e; font-weight: 800; }
+  caption {
+    caption-side: bottom; font-size: 34px; color: #5a7184;
+    text-align: left; margin-top: 20px; line-height: 1.35; font-style: italic;
+  }
+
+  .bignum {
+    display: flex; gap: 40px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .stat {
+    flex: 1; min-width: 300px; text-align: center;
+    background: #f0f7fa; border-radius: 20px; padding: 40px 26px;
+  }
+  .stat .n { font-size: 96px; font-weight: 800; color: #0a6ea3; line-height: 1; }
+  .stat.red .n { color: #b3261e; }
+  .stat.green .n { color: #1b8a3a; }
+  .stat .l { font-size: 36px; color: #34536b; margin-top: 16px; line-height: 1.3; }
+
+  .takeaway {
+    background: linear-gradient(135deg, #0a6ea3, #00a08c);
+    color: #fff; border-radius: 26px; padding: 68px 72px;
+    box-shadow: 0 14px 40px rgba(11,42,61,0.18); border-top: none;
+  }
+  .takeaway h2 { color: #fff; }
+  .takeaway p { color: #eaf6fb; font-size: 50px; line-height: 1.42; }
+  .takeaway p + p { margin-top: 30px; }
+
+  .codebox {
+    background: #0b2a3d; color: #cfe8f2; border-radius: 18px;
+    padding: 40px 46px; margin-top: 26px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 38px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .codebox .cm { color: #7fb8c9; }
+  .codebox .kw { color: #ffd479; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    margin-top: 52px; border-top: 6px solid #cdd9e0;
+    padding-top: 38px; display: flex; justify-content: space-between;
+    align-items: center; font-size: 42px; color: #5a7184;
+  }
+  footer .repo { font-weight: 700; color: #0a6ea3; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="kicker">ESIP Summer Meeting 2026 &nbsp;•&nbsp; Austin, Texas</div>
+    <h1><span class="accent">CODED</span> — Cloud-Optimized<br>Distributed Earth Data</h1>
+    <div class="subtitle">Is <span style="color:#0a6ea3;font-weight:600;">IPFS</span> a viable resilience layer for cloud-optimized geoscience data? Decomposing the cost of decentralized access (Zarr · Icechunk · xarray)</div>
+    <div class="authors">Cory Levinson &nbsp;·&nbsp; Rich Signell &nbsp;·&nbsp; Brian Terry</div>
+    <div class="ff-badge">★ An ESIP Funding Friday Project</div>
+  </header>
+
+  <div class="body">
+
+    <!-- LEFT COLUMN -->
+    <div class="col left">
+
+      <div class="card amber">
+        <h2>Objective</h2>
+        <p class="lead">The geoscience community has converged on <b>cloud-optimized formats</b> — Zarr, and now <b>Icechunk</b> — that stream huge datasets via chunk-level range requests. <b>IPFS</b> offers content-addressed, location-independent, takedown-resistant storage. Can the two be married?</p>
+        <p style="font-weight:800; color:#0b2a3d; font-size:50px;">This round we go past "does it work" to <span style="color:#00a08c;">"where does the time actually go"</span> — separating <span style="color:#0a6ea3;">discovery</span>, <span style="color:#0a6ea3;">transfer</span>, and <span style="color:#0a6ea3;">caching</span> costs, and asking whether Icechunk can read straight from IPFS with <b>zero adapter code</b>.</p>
+      </div>
+
+      <div class="card teal">
+        <h2>Icechunk reads IPFS — no adapter</h2>
+        <p class="lead">Icechunk 2.0.5 ships <code>http_storage(base_url=...)</code>, a read-only store over HTTP. Point it at an IPFS gateway path and the entire repo opens in xarray — the on-disk layout survives <code>ipfs add -r</code> untouched.</p>
+        <div class="codebox">
+<span class="cm"># whole Icechunk repo, straight from a CID</span>
+st = icechunk.http_storage(<span class="kw">"https://gw/ipfs/&lt;CID&gt;"</span>)
+repo = icechunk.Repository.open(st)
+sess = repo.readonly_session(<span class="kw">"main"</span>)
+ds = xr.open_zarr(sess.store)
+        </div>
+        <p style="margin-top:26px; font-size:44px;">Old CID → old snapshot (reproducibility). Edit one of four chunks → <b>6 shared blocks reused</b>, only the changed chunk is new (cross-version dedup for free).</p>
+      </div>
+
+      <div class="card teal">
+        <h2>Caching is the real win</h2>
+        <p>Once a block has been fetched, the second read serves from the local blockstore — no network round-trip. Cold→warm gains were dramatic on the long link.</p>
+        <div class="bignum">
+          <div class="stat green"><div class="n">6.3×</div><div class="l">cold→warm speedup<br>(cross-region)</div></div>
+          <div class="stat"><div class="n">~190</div><div class="l">MB/s warm floor,<br>everywhere</div></div>
+        </div>
+        <p style="margin-top:30px; font-size:44px;">Warm reads converge to ~11&nbsp;s / ~190&nbsp;MB/s regardless of topology. A local pin <b>is</b> the warm floor — provably local (peer disconnected before read).</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col right">
+
+      <div class="card">
+        <h2>Where does the time go?</h2>
+        <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> 2-m temperature slice (500 Zarr chunks) three ways, in two network topologies, splitting each read into <b>discovery</b> vs <b>transfer</b>. Every path returns a bit-identical mean = <b>286.5062&nbsp;K</b>.</p>
+        <table>
+          <thead>
+            <tr><th>Cold read path</th><th>Same-region</th><th>Cross-region</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Local pin (warm floor)</td><td class="win">~11 s</td><td class="win">~11 s</td></tr>
+            <tr><td>Direct peer (Bitswap)</td><td class="s3">+16 s</td><td class="slow">+57 s</td></tr>
+            <tr><td>DHT discovery vs direct</td><td>~noise</td><td>~noise</td></tr>
+            <tr><td>Icechunk on S3 (control)</td><td class="s3">51 s</td><td class="s3">51 s</td></tr>
+          </tbody>
+          <caption>Transfer overhead = direct − local. Same-region ≈130&nbsp;MB/s VPC; cross-region ≈36&nbsp;MB/s WAN. Discovery (DHT vs direct) is within noise in a 2-node swarm — a lower-bound caveat, not a general claim.</caption>
+        </table>
+        <div class="bignum">
+          <div class="stat green"><div class="n">≈0</div><div class="l">discovery overhead<br>(2-node swarm, cold)</div></div>
+          <div class="stat red"><div class="n">+57s</div><div class="l">cross-region transfer<br>penalty vs local</div></div>
+        </div>
+      </div>
+
+      <div class="card amber">
+        <h2>What This Means</h2>
+        <ul>
+          <li><b>Blame the distance, not the DHT.</b> Discovery is cheap; high-RTT, single-peer transfer is the cost. More peers &amp; regional gateways close the gap.</li>
+          <li><b>Warm ≈ free.</b> Caching / pinning gives repeat readers a local-speed floor — the natural pattern for shared community data.</li>
+          <li><b>Icechunk-on-IPFS is real today</b> via <code>http_storage</code> — reproducible, dedup-friendly, zero adapter code.</li>
+        </ul>
+      </div>
+
+      <div class="takeaway">
+        <h2>Bottom Line</h2>
+        <p><b>Distance dominates — not discovery.</b> Finding content on IPFS is cheap; moving 2&nbsp;GB across a continent is what costs you. And the second read is nearly free.</p>
+        <p>Co-locate a gateway (or pin locally) and IPFS delivers S3-class throughput with verifiable, takedown-resistant data. Icechunk-on-IPFS needs <b>no custom code</b>.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <div>CODED &nbsp;·&nbsp; An ESIP Funding Friday Project &nbsp;·&nbsp; Cory Levinson, Rich Signell &amp; Brian Terry</div>
+    <div class="repo">github.com/ESIPFed/coded-blog</div>
+  </footer>
+
+</div>
+</body>
+</html>
