@@ -161,13 +161,13 @@
 
       <div class="card teal">
         <h2>Preserve <i>your</i> dataset - CID on Storacha</h2>
-        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID to <b>Storacha</b> (Filecoin-backed, free to 5&nbsp;GB) - verifiable and independent of any single institution.</p>
+        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Storacha</b> (Filecoin-backed, free to 5&nbsp;GB) — or <b>any public IPFS node</b> — so it stays available, verifiable, and independent of any single institution.</p>
         <div class="codebox">
 <span class="cm"># 1. add your existing store to IPFS → root CID</span>
 cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
 <span class="cm"># 2. export the whole DAG (all chunks + refs) to a CAR file</span>
 ipfs dag export $cid &gt; my.car
-<span class="cm"># 3. pin that CAR to Storacha (Filecoin-backed, free 5 GB)</span>
+<span class="cm"># 3. pin that CAR on Storacha (or any public IPFS node)</span>
 w3 up --car my.car     <span class="cm"># same CID, now persistent</span>
         </div>
         <p style="margin-top:26px; font-size:44px;">The <b>CID is a hash of the data</b> - tamper-evident and location-independent. Share it beside your DOI and your data outlives any single server.</p>
