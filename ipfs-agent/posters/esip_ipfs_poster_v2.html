@@ -170,13 +170,14 @@ sess = repo.readonly_session(<span class="kw">"main"</span>)
 ds = xr.open_zarr(sess.store)
         </div>
         <p style="margin-top:26px; font-size:44px;">Old CID → old snapshot (reproducibility). Edit one of four chunks → <b>6 shared blocks reused</b>, only the changed chunk is new (cross-version dedup for free).</p>
-        <p style="margin-top:30px; font-weight:800; color:#0b2a3d; font-size:46px;">…and preserving your <i>own</i> data is one upload:</p>
+        <p style="margin-top:30px; font-weight:800; color:#0b2a3d; font-size:46px;">Preserve an <i>existing</i> Zarr/Icechunk store on IPFS + Storacha:</p>
         <div class="codebox">
-<span class="cm"># add your Zarr/Icechunk store to IPFS → a content ID (CID)</span>
-ipfs add -r --cid-version=1 my.zarr
-<span class="cm"># pin that CID to Storacha (Filecoin-backed, free to 5 GB)</span>
-w3 up --car my.zarr.car
-<span class="cm"># share the CID beside your DOI — verifiable, permanent</span>
+<span class="cm"># 1. add your existing store to IPFS → root CID</span>
+cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
+<span class="cm"># 2. export the whole DAG (all chunks + refs) to a CAR file</span>
+ipfs dag export $cid &gt; my.car
+<span class="cm"># 3. pin that CAR to Storacha (Filecoin-backed, free 5 GB)</span>
+w3 up --car my.car     <span class="cm"># same CID, now persistent</span>
         </div>
       </div>
 
