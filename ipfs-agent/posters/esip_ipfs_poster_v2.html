@@ -57,7 +57,7 @@
     grid-gap: 44px;
     margin-top: 10px;
   }
-  .col { display: flex; flex-direction: column; gap: 44px; }
+  .col { display: flex; flex-direction: column; gap: 38px; }
 
   .card {
     background: #ffffff; border-radius: 26px;
@@ -112,7 +112,7 @@
 
   .takeaway {
     background: linear-gradient(135deg, #0a6ea3, #00a08c);
-    color: #fff; border-radius: 26px; padding: 46px 72px; margin-bottom: 12px;
+    color: #fff; border-radius: 26px; padding: 38px 72px; margin-bottom: 8px;
     box-shadow: 0 14px 40px rgba(11,42,61,0.18); border-top: none;
   }
   .takeaway h2 { color: #fff; }
@@ -129,6 +129,11 @@
   .codebox .kw { color: #ffd479; }
 
   /* ---------- FOOTER ---------- */
+  .ack {
+    margin-top: 24px; font-size: 34px; line-height: 1.35; color: #5a7184;
+    font-style: italic; border-left: 8px solid #00a08c; padding-left: 28px;
+  }
+  .ack b { color: #0a6ea3; font-style: normal; }
   footer {
     margin-top: 28px; border-top: 6px solid #cdd9e0;
     padding-top: 28px; display: flex; justify-content: space-between;
@@ -156,12 +161,12 @@
       <div class="card amber">
         <h2>Objective</h2>
         <p class="lead">The geoscience community has converged on <b>cloud-optimized formats</b> - Zarr, and now <b>Icechunk</b> - that stream huge datasets via chunk-level range requests. <b>IPFS</b> offers content-addressed, location-independent, takedown-resistant storage. Can the two be married?</p>
-        <p style="font-weight:800; color:#0b2a3d; font-size:46px;">This round we go past "does it work" to <span style="color:#00a08c;">"where does the time go"</span> — separating <span style="color:#0a6ea3;">discovery</span>, <span style="color:#0a6ea3;">transfer</span>, and <span style="color:#0a6ea3;">caching</span> costs.</p>
+        <p style="font-weight:800; color:#0b2a3d; font-size:46px;">This round we go past "does it work" to <span style="color:#00a08c;">"where does the time go"</span> - separating <span style="color:#0a6ea3;">discovery</span>, <span style="color:#0a6ea3;">transfer</span>, and <span style="color:#0a6ea3;">caching</span> costs.</p>
       </div>
 
       <div class="card teal">
         <h2>Preserve <i>your</i> dataset - CID on Storacha</h2>
-        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Storacha</b> (Filecoin-backed, free to 5&nbsp;GB) — or <b>any public IPFS node</b> — so it stays available, verifiable, and independent of any single institution.</p>
+        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Storacha</b> (Filecoin-backed, free to 5&nbsp;GB) - or <b>any public IPFS node</b> - so it stays available, verifiable, and independent of any single institution.</p>
         <div class="codebox">
 <span class="cm"># 1. add your existing store to IPFS → root CID</span>
 cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
@@ -170,7 +175,7 @@ ipfs dag export $cid &gt; my.car
 <span class="cm"># 3. pin that CAR on Storacha (or any public IPFS node)</span>
 w3 up --car my.car     <span class="cm"># same CID, now persistent</span>
         </div>
-        <p style="margin-top:26px; font-size:44px;">The <b>CID is a hash of the data</b> - tamper-evident and location-independent. Share it beside your DOI and your data outlives any single server.</p>
+        <p style="margin-top:22px; font-size:42px;">The <b>CID is a hash of the data</b> — tamper-evident and location-independent. Share it beside your DOI.</p>
       </div>
 
       <div class="card teal">
@@ -183,7 +188,7 @@ repo = icechunk.Repository.open(st)
 sess = repo.readonly_session(<span class="kw">"main"</span>)
 ds = xr.open_zarr(sess.store)
         </div>
-        <p style="margin-top:26px; font-size:44px;">Old CID → old snapshot (reproducibility). Edit one of four chunks → <b>6 shared blocks reused</b>, only the changed chunk is new (cross-version dedup for free).</p>
+        <p style="margin-top:22px; font-size:42px;">Old CID → old snapshot (reproducibility). Edit one of four chunks → <b>6 shared blocks reused</b> — cross-version dedup for free.</p>
       </div>
 
     </div>
@@ -198,7 +203,7 @@ ds = xr.open_zarr(sess.store)
           <div class="stat green"><div class="n">6.3×</div><div class="l">cold→warm speedup<br>(cross-region)</div></div>
           <div class="stat"><div class="n">~190</div><div class="l">MB/s warm floor,<br>everywhere</div></div>
         </div>
-        <p style="margin-top:30px; font-size:44px;">Warm reads converge to ~11&nbsp;s / ~190&nbsp;MB/s regardless of topology. A local pin <b>is</b> the warm floor - provably local (peer disconnected before read).</p>
+        <p style="margin-top:24px; font-size:44px;">Warm reads converge to ~11&nbsp;s / ~190&nbsp;MB/s regardless of topology. A local pin <b>is</b> the warm floor.</p>
       </div>
 
       <div class="card">
@@ -216,10 +221,6 @@ ds = xr.open_zarr(sess.store)
           </tbody>
           <caption>Transfer overhead = direct - local. Same-region ≈130&nbsp;MB/s VPC; cross-region ≈36&nbsp;MB/s WAN. Discovery (DHT vs direct) is within noise in a 2-node swarm - a lower-bound caveat, not a general claim.</caption>
         </table>
-        <div class="bignum">
-          <div class="stat green"><div class="n">≈0</div><div class="l">discovery overhead<br>(2-node swarm, cold)</div></div>
-          <div class="stat red"><div class="n">+57s</div><div class="l">cross-region transfer<br>penalty vs local</div></div>
-        </div>
       </div>
 
       <div class="card amber">
@@ -238,6 +239,10 @@ ds = xr.open_zarr(sess.store)
 
     </div>
 
+  </div>
+
+  <div class="ack">
+    <b>Acknowledgements:</b> This work was greatly assisted by an OpenClaw agent running on an AWS VM using Claude Sonnet through Amazon Bedrock. Thanks to AWS for providing ESIP Credits to do this work!
   </div>
 
   <footer>
