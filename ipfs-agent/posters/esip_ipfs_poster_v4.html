@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  /* ESIP Summer Meeting poster v2 - 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
+  /* ESIP Summer Meeting poster v4 - 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
   @page { size: 36in 48in; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -166,7 +166,7 @@
 
       <div class="card teal">
         <h2>Preserve <i>your</i> dataset - CID on Filebase</h2>
-        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Filebase</b> (IPFS + Filecoin, free to 5&nbsp;GB) - or <b>any public IPFS node</b> - so it stays available, verifiable, and independent of any single institution.</p>
+        <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Filebase</b> (IPFS + Filecoin, free to 5&nbsp;GB / 500 pins) - or <b>any public IPFS node</b> - so it stays available, verifiable, and independent of any single institution.</p>
         <div class="codebox">
 <span class="cm"># 1. add your existing store to IPFS → root CID</span>
 cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
@@ -177,7 +177,9 @@ aws s3 cp my.car s3://bucket/my.car \
   --endpoint-url https://s3.filebase.com \
   --metadata import=car   <span class="cm"># same CID, now persistent</span>
         </div>
-        <p style="margin-top:22px; font-size:42px;">The <b>CID is a hash of the data</b> — tamper-evident and location-independent. Share it beside your DOI.</p>
+        <p style="margin-top:22px; font-size:42px;">The <b>CID is a hash of the data</b> — tamper-evident and location-independent. Our live ERA5 store:</p>
+        <p style="margin-top:12px; font-size:34px; font-family:'SF Mono',Menlo,Consolas,monospace; color:#0a6ea3; overflow-wrap:anywhere;">bafybeiecltl3mtags2i3jeumxe5c7zuvj2r76zxwxg6tfljiouvywqzbaq</p>
+        <p style="margin-top:16px; font-size:38px;"><b>One CID = the whole queryable store.</b> Re-chunked to 100 blocks (5 timesteps each) to fit the free-tier pin budget - <b>data byte-identical</b> (maxdiff 0.0).</p>
       </div>
 
       <div class="card teal">
