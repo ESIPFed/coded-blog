@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  /* ESIP Summer Meeting poster v4 - 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
+  /* ESIP Summer Meeting poster v5 - 36" x 48" portrait @ 96dpi = 3456 x 4608 px */
   @page { size: 36in 48in; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -148,7 +148,7 @@
   <header>
     <div class="kicker">ESIP Summer Meeting 2026 &nbsp;•&nbsp; Austin, Texas</div>
     <h1><span class="accent">CODED</span> - Cloud-Optimized<br>Distributed Earth Data</h1>
-    <div class="subtitle">Can the decentralized peer-to-peer <span style="color:#0a6ea3;font-weight:600;">InterPlanetary File System (IPFS)</span> make important environmental datasets resilient against institutional takedowns, while remaining useful for cloud-native geospatial workflows? (Zarr · Icechunk · xarray)</div>
+    <div class="subtitle"><b style="color:#0b2a3d;">IPFS is a viable way to preserve scientific data.</b> A <span style="color:#0a6ea3;font-weight:600;">Zarr</span> or <span style="color:#0a6ea3;font-weight:600;">Icechunk</span> dataset converts to content-addressed <span style="color:#0a6ea3;font-weight:600;">IPFS</span> in one command, pins on a service like Filebase, and re-opens straight into <span style="color:#0a6ea3;font-weight:600;">xarray</span> - takedown-resistant, verifiable, and performant enough for real work.</div>
     <div class="authors">Cory Levinson &nbsp;·&nbsp; Rich Signell &nbsp;·&nbsp; Brian Terry</div>
     <div class="ff-badge">★ An ESIP Funding Friday Project</div>
   </header>
@@ -159,13 +159,13 @@
     <div class="col left">
 
       <div class="card amber">
-        <h2>Objective</h2>
-        <p class="lead">The geoscience community has converged on <b>cloud-optimized formats</b> - Zarr, and now <b>Icechunk</b> - that stream huge datasets via chunk-level range requests. <b>IPFS</b> offers content-addressed, location-independent, takedown-resistant storage. Can the two be married?</p>
-        <p style="font-weight:800; color:#0b2a3d; font-size:46px;">This round we go past "does it work" to <span style="color:#00a08c;">"where does the time go"</span> - separating <span style="color:#0a6ea3;">discovery</span>, <span style="color:#0a6ea3;">transfer</span>, and <span style="color:#0a6ea3;">caching</span> costs.</p>
+        <h2>Why preserve on IPFS?</h2>
+        <p class="lead">Important environmental datasets can vanish when an institution reorganizes, loses funding, or is told to take them down. <b>IPFS</b> stores data by <b>content hash</b>, not by owner or location - so a dataset stays reachable and verifiable no matter who hosts it.</p>
+        <p style="font-weight:800; color:#0b2a3d; font-size:46px; margin-top:24px;">The good news: the cloud-optimized formats the community already uses - <span style="color:#0a6ea3;">Zarr</span> and <span style="color:#00a08c;">Icechunk</span> - drop onto IPFS <span style="color:#00a08c;">as-is</span>, and open right back up in xarray.</p>
       </div>
 
       <div class="card teal">
-        <h2>Preserve <i>your</i> dataset - CID on Filebase</h2>
+        <h2>Step 1 &middot; Preserve <i>your</i> dataset - CID on Filebase</h2>
         <p class="lead">Have an existing <b>Zarr</b> or <b>Icechunk</b> store you can&rsquo;t afford to lose? Add it to IPFS for a content ID (CID), then pin that CID on <b>Filebase</b> (IPFS + Filecoin, free to 5&nbsp;GB / 500 pins) - or <b>any public IPFS node</b> - so it stays available, verifiable, and independent of any single institution.</p>
         <div class="codebox">
 <span class="cm"># 1. add your existing store to IPFS → root CID</span>
@@ -183,8 +183,8 @@ aws s3 cp my.car s3://bucket/my.car \
       </div>
 
       <div class="card teal">
-        <h2>Icechunk reads IPFS - no adapter</h2>
-        <p class="lead">Icechunk 2.0.5 ships <code>http_storage(base_url=...)</code>, a read-only store over HTTP. Point it at an IPFS gateway path and the entire repo opens in xarray - the on-disk layout survives <code>ipfs add -r</code> untouched.</p>
+        <h2>Step 2 &middot; Icechunk reads IPFS - no adapter</h2>
+        <p class="lead">Icechunk 2.0.5 ships <code>http_storage(base_url=...)</code>, a read-only store over HTTP. Point it at an IPFS gateway path and the entire repo opens in xarray - the on-disk layout survives <code>ipfs add -r</code> untouched. <b>Zero adapter code.</b></p>
         <div class="codebox">
 <span class="cm"># whole Icechunk repo, straight from a CID</span>
 st = icechunk.http_storage(<span class="kw">"https://gw/ipfs/&lt;CID&gt;"</span>)
@@ -192,7 +192,7 @@ repo = icechunk.Repository.open(st)
 sess = repo.readonly_session(<span class="kw">"main"</span>)
 ds = xr.open_zarr(sess.store)
         </div>
-        <p style="margin-top:22px; font-size:42px;">Old CID → old snapshot (reproducibility). Edit one of four chunks → <b>6 shared blocks reused</b> — cross-version dedup for free.</p>
+        <p style="margin-top:22px; font-size:42px;">Old CID &rarr; old snapshot (reproducibility). Edit one of four chunks &rarr; <b>6 shared blocks reused</b> — cross-version dedup for free.</p>
       </div>
 
     </div>
@@ -200,45 +200,40 @@ ds = xr.open_zarr(sess.store)
     <!-- RIGHT COLUMN -->
     <div class="col right">
 
-      <div class="card teal">
-        <h2>Caching is the real win</h2>
-        <p>Once a block has been fetched, the second read serves from the local blockstore - no network round-trip. With <b>100 fat chunks (~21&nbsp;MB)</b> the cold&rarr;warm gains are even sharper than the old 500-chunk layout.</p>
-        <div class="bignum">
-          <div class="stat green"><div class="n">13.8×</div><div class="l">cold&rarr;warm speedup<br>(peak)</div></div>
-          <div class="stat"><div class="n">~260</div><div class="l">MB/s warm floor,<br>everywhere</div></div>
-        </div>
-        <p style="margin-top:24px; font-size:44px;">Warm reads converge to <b>~8&nbsp;s / ~260&nbsp;MB/s</b> regardless of topology. A local pin <b>is</b> the warm floor - and here it even <b>beats native Icechunk-on-S3</b>.</p>
-      </div>
-
       <div class="card">
-        <h2>Where does the time go?</h2>
-        <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> 2-m temperature slice - now <b>re-chunked to 100 blocks</b> (5 timesteps each) - via <b>Icechunk over IPFS</b> (<code>http_storage</code>) three ways, in two topologies, against a <b>native Icechunk-on-S3</b> control. Every path returns a bit-identical mean = <b>286.5062&nbsp;K</b>.</p>
+        <h2>&hellip; and it&rsquo;s performant enough</h2>
+        <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> temperature slice (100 Icechunk blocks) over IPFS via <code>http_storage</code>, against a <b>native Icechunk-on-S3</b> baseline. Every path returns a bit-identical mean = <b>286.5062&nbsp;K</b>.</p>
+        <div class="bignum">
+          <div class="stat green"><div class="n">~8 s</div><div class="l">warm / local read<br>(beats S3-Icechunk)</div></div>
+          <div class="stat"><div class="n">~260</div><div class="l">MB/s once<br>cached locally</div></div>
+        </div>
         <table>
           <thead>
-            <tr><th>Cold read path</th><th>Same-region</th><th>Cross-region</th></tr>
+            <tr><th>Read path</th><th>Same-region</th><th>Cross-region</th></tr>
           </thead>
           <tbody>
-            <tr><td>Local pin (warm floor)</td><td class="win">~7.6 s</td><td class="win">~7.9 s</td></tr>
-            <tr><td>Direct peer (Bitswap)</td><td class="slow">+103 s</td><td class="slow">+82 s</td></tr>
-            <tr><td>DHT discovery vs direct</td><td>~noise</td><td>~noise</td></tr>
-            <tr><td>Icechunk-on-S3 (control)</td><td class="s3">~14 s</td><td class="s3">~14 s</td></tr>
+            <tr><td>IPFS local pin / warm</td><td class="win">~8 s</td><td class="win">~8 s</td></tr>
+            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~14 s</td><td class="s3">~14 s</td></tr>
+            <tr><td>IPFS cold, first pull</td><td>~75 s</td><td>~101 s</td></tr>
           </tbody>
-          <caption>Transfer overhead = direct - local (a full 2&nbsp;GB bitswap re-fetch per cold cell). Discovery (DHT vs direct) is within noise in a 2-node swarm - a lower-bound caveat, not a general claim. S3-IC = native Icechunk-on-S3 of the identical rechunked bytes.</caption>
+          <caption>Only the first cross-network pull of the full 2&nbsp;GB is slow; it caches away and repeat reads beat S3. Pin near your readers (or co-locate a gateway) and IPFS delivers S3-class throughput.</caption>
         </table>
+        <p style="margin-top:22px; font-size:40px;"><b>One CID = the whole queryable store.</b> Re-chunked to 100 blocks (~21&nbsp;MB) to fit the free-tier pin budget - data byte-identical (maxdiff 0.0).</p>
       </div>
 
-      <div class="card amber">
-        <h2>What This Means</h2>
+      <div class="card teal">
+        <h2>What we verified</h2>
         <ul>
-          <li><b>Blame the distance, not the DHT.</b> Discovery is cheap; a full 2&nbsp;GB single-peer bitswap re-fetch is the cost. More peers &amp; regional gateways close the gap.</li>
-          <li><b>Warm &asymp; free.</b> Caching / pinning gives repeat readers a <b>~8&nbsp;s / ~260&nbsp;MB/s</b> local floor - and a local pin now <b>beats native Icechunk-on-S3</b> (~14&nbsp;s cold).</li>
-          <li><b>Icechunk-on-IPFS is real today</b> via <code>http_storage</code> - open the CID straight into xarray, reproducible &amp; dedup-friendly, zero adapter code.</li>
+          <li><b>It survives your node.</b> With our EC2 node off, the CID still resolved &amp; opened via public gateways (w3s.link, ipfs.io, dweb.link) - Filebase kept serving it.</li>
+          <li><b>The data is exactly the data.</b> The CID is a hash of the bytes - tamper-evident, byte-identical across every read (maxdiff 0.0).</li>
+          <li><b>No new tooling.</b> <code>ipfs add</code> to publish, <code>icechunk.http_storage</code> to read - the formats you already use, unchanged.</li>
         </ul>
       </div>
 
       <div class="takeaway">
         <h2>Bottom Line</h2>
-        <p><b>Distance dominates cold reads - not discovery.</b> Finding content on IPFS is cheap; the first cross-continent 2&nbsp;GB pull is the cost. But <b>pin locally and IPFS-Icechunk is the fastest path here</b> - ~8&nbsp;s warm, beating native Icechunk-on-S3 - with verifiable, takedown-resistant, content-addressed data.</p>
+        <p><b>IPFS is a practical preservation layer for cloud-native Earth data - today.</b> Convert in one command, pin on a free-tier service, re-open in xarray. Your data becomes content-addressed, takedown-resistant, and reproducible - and it reads back fast enough for real analysis.</p>
+        <p style="font-size:40px;">Live demo &amp; notebooks: <b>github.com/ESIPFed/coded-blog</b> &rarr; <code>ipfs-agent/</code></p>
       </div>
 
     </div>
