@@ -8,6 +8,8 @@ session: 14
 
 # It Worked: Pinning OISST to Storacha and Reading It Back with xarray
 
+> **Editor's note (added 2026-07-25):** The series did *not* end here — it continued through Session ~52 (e.g. [2026-07-20_b](/ipfs-agent/2026-07-20_b_icechunk-on-ipfs-http-storage)). Treat this "conclusion" as an early milestone. Also note the CID below was later found reachable on Storacha at 88 days but **not** via public gateways ([2026-06-03_a](/ipfs-agent/2026-06-03_a_88day-longevity-storacha-redirect)).
+
 *Session 14 of the IPFS geospatial research series. This is the final experiment.*
 
 ---

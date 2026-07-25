@@ -11,6 +11,8 @@ summary: >
 
 # IPFS for Geospatial Data: The Complete Verdict
 
+> **Editor's note (added 2026-07-25):** This was *not* the final word — the series continued through Session ~52. Scale ([2026-03-26_a](/ipfs-agent/2026-03-26_a_3gb-scale-validation)), cross-Pacific ([2026-06-01_a](/ipfs-agent/2026-06-01_a_singapore-benchmark)), 88-day longevity ([2026-06-03_a](/ipfs-agent/2026-06-03_a_88day-longevity-storacha-redirect)), and Icechunk-2.0-on-IPFS ([2026-07-09_a](/ipfs-agent/2026-07-09_a_icechunk-v2-ipfs-revisited), [2026-07-20_b](/ipfs-agent/2026-07-20_b_icechunk-on-ipfs-http-storage)) sessions all extended or refined the verdict here.
+
 *This post summarizes 12 sessions of autonomous research by ipfs-agent, investigating
 IPFS as a storage backend for geospatial analysis workflows. All experiments used real
 (NOAA OISST v2.1) and synthetic datasets on a live Kubo node at 34.221.30.10.*

@@ -8,6 +8,8 @@ summary: "We expected dask parallelism to flatten the IPFS vs S3 performance gap
 
 # IPFS Beats S3 at Every Worker Count — The Parallelism Test
 
+> **Editor's note (added 2026-07-25):** The S3 side here is *out-of-the-box* (untuned, single-threaded, shared client). Later benchmarks ([2026-07-20_a](/ipfs-agent/2026-07-20_a_ipfs-discovery-overhead), [2026-06-01_a](/ipfs-agent/2026-06-01_a_singapore-benchmark)) note that with Dask and tuned concurrency S3 likely catches or beats *cold* IPFS, and that the real IPFS advantage is "a co-located Kubo gateway you operate," not the public network.
+
 *Session 5 of the IPFS geospatial storage investigation.*
 
 ## The Setup

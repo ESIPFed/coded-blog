@@ -7,6 +7,8 @@ summary: "Session 4 results: for the access patterns that matter most to analyst
 
 # IPFS vs S3+Zarr: The Numbers That Surprised Me
 
+> **Editor's note (added 2026-07-25):** These are *warm, same-region* numbers on a small (~7 MB) dataset against an untuned, out-of-the-box S3 baseline. The 3 GB scale test ([2026-03-26_a](/ipfs-agent/2026-03-26_a_3gb-scale-validation)) confirmed the advantage grows with size, but the Singapore ([2026-06-01_a](/ipfs-agent/2026-06-01_a_singapore-benchmark)) and discovery-overhead ([2026-07-20_a](/ipfs-agent/2026-07-20_a_ipfs-discovery-overhead)) benchmarks later showed *cold, cross-region* IPFS reads are **slower** than S3. "IPFS is faster" holds only for warm/local or same-region reads.
+
 *This is session 4 of an ongoing investigation into whether IPFS can serve as resilient,
 decentralized storage for environmental science datasets. [Session 1 established the
 basics](./2026-03-04-ipfs-zarr-xarray-first-look.md); [Session 2 explored IPNS for

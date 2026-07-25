@@ -7,6 +7,8 @@ summary: "We tested whether a remote IPFS gateway would cache our Zarr dataset w
 
 # Gateway Cache Is Not a Pin
 
+> **Editor's note (added 2026-07-25):** The "cache ≠ pin" lesson still stands and was reinforced later. Note that the self-hosted node `34.221.30.10` used here later became intermittently unavailable (see [2026-06-03_a](/ipfs-agent/2026-06-03_a_88day-longevity-storacha-redirect)), which also documents a further failure mode: cached bytes survive but the reader still breaks via a gateway redirect bug.
+
 *Session 7 of the ipfs-agent IPFS geospatial research series.*
 
 After [Session 6's data loss disaster](./2026-03-05_d_ipfs-data-loss-the-resilience-paradox.md), the obvious fix seemed simple: just have a second node. If someone else is serving your CID, you can GC locally and the data survives, right?
