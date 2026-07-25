@@ -175,6 +175,12 @@
     align-items: center; font-size: 40px; color: #5a7184;
   }
   footer .repo { font-weight: 700; color: #0a6ea3; }
+  .qrcard { display: flex; align-items: flex-start; justify-content: center; gap: 90px; margin-top: auto; }
+  .qr { text-align: center; width: 340px; }
+  .qr img { width: 220px; height: 220px; display: block; border: 4px solid #cbd8e0;
+    border-radius: 12px; background: #fff; margin: 0 auto 16px; }
+  .qr-label { font-size: 38px; font-weight: 800; color: #0a6ea3; line-height: 1.1; white-space: nowrap; }
+  .qr-label span { display:block; font-size: 30px; font-weight: 600; color: #5a7184; margin-top: 4px; }
 
   /* ---------- FIGURES ---------- */
   .figcard { padding: 30px 30px 26px; }
@@ -239,6 +245,17 @@ cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
         <p style="margin-top:22px; font-size:42px;">The <b>CID is a hash of the data</b> — tamper-evident and location-independent. Our live ERA5 store:</p>
         <p style="margin-top:12px; font-size:34px; font-family:'SF Mono',Menlo,Consolas,monospace; color:#0a6ea3; overflow-wrap:anywhere;">bafybeiecltl3mtags2i3jeumxe5c7zuvj2r76zxwxg6tfljiouvywqzbaq</p>
         <p style="margin-top:16px; font-size:38px;"><b>One CID = the whole queryable store.</b> Re-chunked to 100 blocks (5 timesteps each) to fit the free-tier pin budget - <b>data byte-identical</b> (maxdiff 0.0).</p>
+      </div>
+
+      <div class="card qrcard">
+        <div class="qr">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAIcAQMAAACHMOU/AAAABlBMVEULKj3///9GLnjHAAAC2UlEQVR42u2dW2oDMQxFRTfg/e/SO5iS1iNdyQ4JpD9FZyhlms7cj8Dh6mXbrs+vaYgggggiiCDyvoj5Na7153j89n89HpvrQ/9vvDK/7A8uRBD5XyI/gIxFUtyY+SfrwxnP11dgB5HG7Cw3uW/cfcKbRpiVPgk7iMCOE/Eboa0gbUhcNyJQhB1EYKey47zMBcszZGAHEdjR5KUkOJLU3H5EvoMIIs6OX2I9L37kFdhBpC07egVEbkmS+KwywiiFbr5YRHrnO2ZKSqQ5M1DysC2ehx1EmvuOY2KmsITjHKM7YjZEmrMzc5wmZeqCldYWInKDHUQas6M90IPpaLd0yrsT30GEfMc0HkuOI6Fa9H20iA07iDTOdwKHErnJzT6Qg+8gQsxWygJKRwAlwZs/hu8g0jxmSzOf3tDRNQhl/EA8C3YQ6RyzVX9RS5op2fE6dixVgB1E2vpO4UKrbQrOVde+ke8gQszmkZi7SSLrkkqChnPkO4hQK5hbkDbS4uvjjAFz1IgQsx0m2bSqdqWyW1rOAzuItI/ZtNGz5zV7JYH+DiKwo1t8pFrBNoqjcEXDFHYQ6ZzvXKl3k0c9LS3YmVY20oEdRPAdD8miiTNPrNXyAl8sIn3ZsdzBSYXrUVzG6noE2EGkLTuW9vxMFYNceSsBG/kOIrCz7o/79D5bBEetABHYyf4SvR53orzmutYQYAeR3uyov+hihLTFR1klZ/R3EKFWkCIxz4DqKM5Mszr4DiKwc165M+oIaPEd8h1EYKfcvNiv4I7WmGdDpDk7ZV9QrQPswZsaE/NsiFAriMRfXSZ3SFOyI+1U2EGkeb5TGdm21dUzRNI4KOwg0jvfSeusx1ZAMEvnWJnJaSN8sYjATh5gKzt7jOt4NhzsIAI7KYspJ43qSXClzgA7iJDvSEPnuIV79SbyHUSas+OXHiRqZltDJ83t4DuItGfn02sigggiiCCCyJsi39RAU8r6ieUOAAAAAElFTkSuQmCC" alt="QR code to the ERA5 demo notebook">
+          <div class="qr-label">Demo notebook<span>read ERA5 from IPFS</span></div>
+        </div>
+        <div class="qr">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAHsAQMAAAAq5AwjAAAABlBMVEULKj3///9GLnjHAAACcUlEQVR42u2dUU4DMQxELS6Q+98yNwiUbu2xF/FTCWHrraqqLHl8RLPuxLGDnXeubeDg4ODg/x83v9Z5vMziL+/HzRi50uCzP+ytCxz87/FLyc/rW8aX8h8ffIA/DqsMZubBu2reVX3p+SX1FOHXqYPRPHh/zbu3KV8BHv/RPPg0zX/dcSdvYuZ3MvxoHnyMn78MzPNX23yNrN4GPw/eXvMlb/P7i7wNeH/N66VPQbqzfkx1MvPgjb1NGHWJ+aH2beHqnULz4H01vy8DnyL/lkXuClf/HE+cB++et7mykeHVzR8ED++qfDQP3t3Pa8bGxf/DbuzrHc2Dt9Z8knepsdE17E76R/PgA/I2abmaS85KJoc4D97Yz4uZ9yWtbkhp+WXen2XmwRtr3mvJ9EMK9aXwEs2Dd9Z8Kh6WIG+Sq0ybsKxhwVtrfiWXHqE+Z+xLBQKaB5/h51X/tUlEHgG8DXj3OB/JmZuf167ACPjEefDu3kY3YdXS79sw4jz4oD2p1FSuOcmTiuqleYqZB++q+ZKfL4nKmuQx8vPg7dewEcN//wrQ/VlqD8Cn+PmygI33c/ShIM6D99a8N3qv2hhb96QkpYnmwbuvYaOQXmxPqrpc1JiBT8vb6Cas+nxtLZGzzph58MZr2NonJckcPehJf0Tz4H3jvHZLRb2Ztr4eqUwgPw8+Is5HAN+1SSQd3EcPOPiwc4lvDYDl0IO0LYXmwdtqPuSdDY+Vsz70GwHNg4/QfDmL9db0bXoTzYNP0HxuD1T3brcjEdA8+AQ/n1u/43CnRZ8U+Ni8jdsYPXZeK+rlcWDmwVtqnn8/Bw4ODj4X/wSIVz178JbqbwAAAABJRU5ErkJggg==" alt="QR code to the final report">
+          <div class="qr-label">Final report<span>full write-up</span></div>
+        </div>
       </div>
 
     </div>
