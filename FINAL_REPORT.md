@@ -16,12 +16,12 @@ Over 52 autonomous research sessions spanning nearly five months, the answer set
 
 - **It works with zero code changes.** `xarray.open_zarr()` reads Zarr and Icechunk data straight off an IPFS gateway. Icechunk 2.0's `http_storage` backend reads an entire repo by CID with no adapter code at all.
 - **Geography dominates performance, not the protocol.** A *co-located* IPFS node beats S3 for partial reads (2.4× spatial, 3.8× time-series at 3 GB). A *cold, cross-region* read loses to same-region S3 — 6–14× slower across the Pacific. Discovery (DHT vs known peer) is nearly free; **transfer distance is everything**, and a local pin collapses a 69 s cross-region cold read to ~10 s.
-- **A CID without active pinners is not resilient** — it is a file on your laptop. Storacha/Filecoin fixes this, and it held: after 88 days on the free tier, all five pinned CIDs were byte-for-byte intact.
+- **A CID without active pinners is not resilient** — it is a file on your laptop. Storacha/Filecoin addresses this, and it held: after 88 days on Storacha's 5 GB free tier, all five pinned CIDs were byte-for-byte intact.
 - **Resilience is more than surviving bytes.** The 88-day check surfaced a subtler failure: the bytes lived, but a Storacha gateway 307→504 redirect bug broke the *reader*. Durable storage needs an **access path you control**, not just a live CID.
 - **Icechunk is a natural fit.** Its split of immutable objects + one tiny mutable branch pointer is isomorphic to IPFS's split of immutable CIDs + mutable IPNS names. We didn't just argue this — we built it and read a real 2 GB ERA5 repo back through xarray at ~180 MB/s.
 - **A zero-cost standards win exists today:** publish the **CIDv1 alongside the DOI** in DataCite metadata. It turns a location pointer into a cryptographic content guarantee with no infrastructure change.
 
-**The honest one-line recommendation:** *Put your data on S3 for speed. Add it to a co-located IPFS node for fast partial reads. Pin the CAR to Storacha/Filecoin for resilience. Publish the CIDv1 alongside the DOI for verifiability. That's the full stack — working today, at roughly $0/month at research scale.*
+**The one-line recommendation:** *Put your data on S3 for speed. Add it to a co-located IPFS node for fast partial reads. Pin the CAR to Storacha/Filecoin for resilience. Publish the CIDv1 alongside the DOI for verifiability. That's the full stack — working today. It is not free: someone always pays to keep the bytes online — an institution running an IPFS node, or a hosting service like Filebase/Storacha beyond their free tier — but at research scale the cost is modest and the free tiers cover small datasets.*
 
 This report was produced by an autonomous AI agent; the methodology that made that possible is described next.
 
@@ -41,13 +41,13 @@ This project is unusual in that **the researcher was an AI agent**, running cont
 ### Research methodology
 
 - **Reproducible, ephemeral benchmarks.** Every performance claim ran on EC2 nodes provisioned for the test and **terminated afterward** — no orphans, security groups deleted. Run logs captured instance IDs, peer IDs, CIDs, timestamps, and every anomaly (including OOM kills and retries), so results are auditable rather than cherry-picked.
-- **Honesty as a first-class rule.** Dead ends were published, not buried. Untuned baselines were labeled "untuned." Single-sample cells were flagged as inside the noise floor. Where a "cross-region" label required stopping a nearby daemon to be *true*, that was stated in the post.
+- **Transparency as a first-class rule.** Dead ends were published, not buried. Untuned baselines were labeled "untuned." Single-sample cells were flagged as inside the noise floor. Where a "cross-region" label required stopping a nearby daemon to be *true*, that was stated in the post.
 - **Real data, bit-checked.** Benchmarks used real NOAA OISST and ERA5 datasets, and sanity values (e.g. an area-weighted global mean of 286.5062 K) were bit-matched across backends and sessions to prove apples-to-apples comparisons.
 - **Version discipline.** After a Kubo version bit us on replication, the standing rule became "never run < 0.41 for a comparison." Software versions are recorded per post.
 
 ### A note on the AI-authored voice
 
-The blog posts are written in the first person by the agent. They are research-log entries, not peer-reviewed papers, and they were reviewed by humans (including a technical review addendum from Martin Durant on the Icechunk-2.0 post). Treat them as an honest, dated, reproducible lab notebook.
+The blog posts are written in the first person by the agent. They are research-log entries, not peer-reviewed papers, and they were reviewed by humans (including a technical review addendum from Martin Durant on the Icechunk-2.0 post). Treat them as a dated, reproducible lab notebook.
 
 ---
 
@@ -63,7 +63,7 @@ The opening question was pure feasibility: can xarray read Zarr off IPFS at all?
 
 ### Phase 2 — The Resilience Paradox (Sessions 6–7, Mar 5–6)
 
-The gut-punch phase. A fresh CID on a single node is **not resilient** — public gateways time out (30 s+) and a local `ipfs repo gc` deletes it forever. Worse, a remote **gateway cache is not a pin**: fetching `zarr.json` caches 2 blocks, not your 11,712 data chunks. The cold-cache penalty was a staggering ~30,000 ms/chunk vs 7 ms warm. This reframed the entire project: **resilience is a pinning problem, not a protocol property.**
+This phase reframed the project. A fresh CID on a single node is **not resilient** — public gateways time out (30 s+) and a local `ipfs repo gc` deletes it forever. Worse, a remote **gateway cache is not a pin**: fetching `zarr.json` caches 2 blocks, not your 11,712 data chunks. The cold-cache penalty was ~30,000 ms/chunk vs 7 ms warm. This reframed the entire project: **resilience is a pinning problem, not a protocol property.**
 
 ### Phase 3 — Building the Stack (Sessions 8–17, Mar 6–7)
 
@@ -73,11 +73,11 @@ With the problem understood, the team assembled the working architecture: **STAC
 
 ### Phase 4 — Longevity & Ecosystem (Sessions 18–45, Mar 8–26)
 
-The patient phase: does it *stay* up? A longevity chain — 24 h → 5 d → 7 d → 13 d → 20 d — showed zero data loss, survival through an unplanned primary-node outage, and a pleasant side effect: the ipfs.io edge CDN *warmed* to ~69 ms. **Filecoin deals were cryptographically confirmed** via IPNI graphsync metadata. A **3 GB scale validation** showed the co-located IPFS advantage *grows* with size (2.4× spatial, 3.8× time-series). An **Arweave** comparison mapped the century-scale permanence tradeoff. The **CID-alongside-DOI** proposal crystallized as the project's cleanest standards contribution. And a survey of the data-rescue ecosystem (Data Rescue Project, SciOp, EDGI, Internet Archive) positioned IPFS as **complementary, not competitive** — a Filecoin cold-storage backstop and a verification layer, not a replacement for human curation or web archiving. The first **`REPORT.md`** was written in this phase.
+The question here: does it *stay* up? A longevity chain — 24 h → 5 d → 7 d → 13 d → 20 d — showed zero data loss, survival through an unplanned primary-node outage, and a side effect worth noting: the ipfs.io edge CDN *warmed* to ~69 ms. **Filecoin deals were cryptographically confirmed** via IPNI graphsync metadata. A **3 GB scale validation** showed the co-located IPFS advantage *grows* with size (2.4× spatial, 3.8× time-series). An **Arweave** comparison mapped the century-scale permanence tradeoff. The **CID-alongside-DOI** proposal crystallized as the project's cleanest standards contribution. And a survey of the data-rescue ecosystem (Data Rescue Project, SciOp, EDGI, Internet Archive) positioned IPFS as **complementary, not competitive** — a Filecoin cold-storage backstop and a verification layer, not a replacement for human curation or web archiving. The first **`REPORT.md`** was written in this phase.
 
 ### Phase 5 — Provider Side & the Distance Problem (Sessions 46–49, Apr 12 – Jun 3)
 
-Attention turned to *publishing* and to *distance*. The **pinner-strategy** post laid out the copy spectrum (`ipfs add` full copy → filestore `--nocopy` → kerchunk/VirtualiZarr pointer-only). **ipfsspec** was measured 10–30% faster than raw HTTP. Then the **cross-Pacific Singapore benchmark** delivered the hard truth: a cold bitswap pull across the Pacific is catastrophic (655 s), and the real advantage was always "a dedicated Kubo gateway near your compute," not the IPFS network itself. Finally, the **88-day longevity check** delivered the most subtle finding of the whole project: all five CIDs were still byte-for-byte intact on Storacha's free tier — but xarray could no longer open the largest one, because a Storacha gateway **307-redirected missing-file probes into dweb.link, where they 504'd**. *The bytes survived; the reader broke.* Resilience needs a controllable access path.
+Attention turned to *publishing* and to *distance*. The **pinner-strategy** post laid out the copy spectrum (`ipfs add` full copy → filestore `--nocopy` → kerchunk/VirtualiZarr pointer-only). **ipfsspec** was measured 10–30% faster than raw HTTP. Then the **cross-Pacific Singapore benchmark** made the distance cost concrete: a cold bitswap pull across the Pacific is very slow (655 s), and the real advantage was always "a dedicated Kubo gateway near your compute," not the IPFS network itself. Finally, the **88-day longevity check** surfaced one of the more subtle findings of the project: all five CIDs were still byte-for-byte intact on Storacha's 5 GB free tier — but xarray could no longer open the largest one, because a Storacha gateway **307-redirected missing-file probes into dweb.link, where they 504'd**. The bytes survived; the reader path broke. Resilience needs a controllable access path, not just live bytes.
 
 ### Phase 6 — Icechunk on IPFS, For Real (Sessions 50–52, Jul 9–20)
 
@@ -171,7 +171,7 @@ python -c "import fsspec,xarray as xr; print(xr.open_zarr(fsspec.get_mapper('htt
 
 ---
 
-## Honest Caveats
+## Caveats
 
 | Limitation | Severity | Workaround |
 |---|---|---|
@@ -182,7 +182,7 @@ python -c "import fsspec,xarray as xr; print(xr.open_zarr(fsspec.get_mapper('htt
 | Surviving bytes ≠ working reader (307→504 bug) | High | Control your access path / gateway |
 | Kerchunk manifest-only ≠ resilience | Critical | Pin the actual bytes too |
 | Dual-layout = 2× storage | Medium | No IPLD shortcut; budget for it |
-| Benchmarks often single-sample | Medium | Trust ranks, salt the absolute MB/s |
+| Benchmarks often single-sample | Medium | Trust the ranks more than the absolute MB/s |
 
 ---
 
@@ -194,7 +194,7 @@ python -c "import fsspec,xarray as xr; print(xr.open_zarr(fsspec.get_mapper('htt
 
 **What IPFS is not:** a drop-in S3 replacement for cross-region or batch traffic; resilient with a single pinner; a CDN without co-location or a managed edge; or fast for cold access from arbitrary locations.
 
-> *Put your data on S3 for speed. Add it to co-located IPFS for fast partial reads. Pin the CAR to Storacha/Filecoin for resilience. Publish the CIDv1 alongside the DOI for verification. That's the full stack — working today, for approximately $0/month at research scale.*
+> *Put your data on S3 for speed. Add it to co-located IPFS for fast partial reads. Pin the CAR to Storacha/Filecoin for resilience. Publish the CIDv1 alongside the DOI for verification. That's the full stack — working today. It is not free: keeping bytes online always has a cost, borne by an institution running a node or a hosting service like Filebase/Storacha. Free tiers cover small datasets; larger archives need a budget line.*
 
 ---
 
