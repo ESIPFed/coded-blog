@@ -24,3 +24,17 @@ IPFS as a resilience layer for cloud-optimized geoscience data (Zarr · Icechunk
 
 Current versions (v5, v6) ship as `.html` (source), `.pdf` (print, 36" × 48" portrait), and `.png`
 (3456 × 4608 raster), rendered with WeasyPrint → pdftoppm. Earlier versions (v1, v3, v4) are kept as `.png` archives only — their HTML/PDF sources have been removed to keep the repo lean.
+
+**Build note — pin WeasyPrint to 63.1.** The poster is a fixed-height canvas
+(`html,body` and `.poster` are `3456×4608px`; `.body` fills the remainder with
+`flex:1`). WeasyPrint ≥ 64 changed how it fragments this layout: the left
+column's "Step 1" block spills onto a phantom second page, orphaning content.
+WeasyPrint 62.x renders one page but silently drops the top-right Telegram
+sticky-note and the IPFS logo. **63.1 is the last version that renders this
+poster correctly** (single page, all elements present). Render with:
+
+```bash
+python3 -m venv /tmp/wp63 && /tmp/wp63/bin/pip install 'weasyprint==63.1'
+/tmp/wp63/bin/weasyprint esip_ipfs_poster_v6.html esip_ipfs_poster_v6.pdf
+pdftoppm -r 96 -png esip_ipfs_poster_v6.pdf out && mv out-1.png esip_ipfs_poster_v6.png
+```
