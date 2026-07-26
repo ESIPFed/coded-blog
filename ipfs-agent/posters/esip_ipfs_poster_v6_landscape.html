@@ -59,14 +59,16 @@
   /* ---------- BODY GRID ---------- */
   .body {
     display: table; table-layout: fixed;
-    width: 100%;
-    border-spacing: 44px 0;
+    width: 100%; border-collapse: collapse;
     margin-top: 26px;
   }
   .col {
     display: table-cell; width: 33.33%;
     vertical-align: top;
+    padding: 0 22px;
   }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { padding-right: 0; }
   .col > * { display: block; margin-bottom: 32px; }
   .col > *:last-child { margin-bottom: 0; }
 
@@ -75,6 +77,7 @@
     padding: 40px 52px 38px;
     border: 1px solid #e2eaef;
     border-left: 14px solid #0a6ea3;
+    max-width: 100%; overflow-wrap: anywhere;
   }
   .card.teal { border-left-color: #00a08c; }
   .card.amber { border-left-color: #ffb524; }
@@ -135,7 +138,8 @@
     background: #0b2a3d; color: #cfe8f2; border-radius: 18px;
     padding: 24px 34px; margin-top: 16px;
     font-family: "SF Mono", Menlo, Consolas, monospace;
-    font-size: 28px; line-height: 1.36; white-space: pre-wrap; overflow-wrap: anywhere;
+    font-size: 28px; line-height: 1.36; white-space: pre-wrap;
+    overflow-wrap: anywhere; max-width: 100%;
   }
   .codebox .cm { color: #7fb8c9; }
   .codebox .kw { color: #ffd479; }
@@ -313,10 +317,10 @@ cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
 <span class="kw">import</span> icechunk, xarray <span class="kw">as</span> xr
 
 GATEWAY = <span class="kw">"https://ipfs.io"</span>
-CID     = <span class="kw">"bafybeiecltl3mtags2i3jeumxe5c7zuvj2r76zxwxg6tfljiouvywqzbaq"</span>
+CID     = <span class="kw">"bafybeiecltl3mtags2i3jeu&#8203;mxe5c7zuvj2r76zxwxg6&#8203;tfljiouvywqzbaq"</span>
 
-<span class="cm"># read-only Icechunk repo, straight from a CID over IPFS</span>
-storage = icechunk.http_storage(<span class="kw">f"{GATEWAY}/ipfs/{CID}"</span>)
+<span class="cm"># read-only Icechunk repo, straight&#8203; from a CID over IPFS</span>
+storage = icechunk.http_storage(&#8203;<span class="kw">f"{GATEWAY}/ipfs/{CID}"</span>)
 repo    = icechunk.Repository.open(storage)
 ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).store,
                        consolidated=<span class="kw">False</span>, chunks={})
