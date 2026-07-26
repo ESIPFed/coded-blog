@@ -303,15 +303,15 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
         <h2>&hellip; and it&rsquo;s performant enough</h2>
         <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> temperature slice (100 Icechunk blocks) over IPFS via <code>http_storage</code>, against a <b>native Icechunk-on-S3</b> baseline. Every path returns a bit-identical mean = <b>286.5062&nbsp;K</b>.</p>
         <div class="bignum">
-          <div class="stat green"><div class="n">~8 s</div><div class="l">warm / local read<br>(beats S3-Icechunk)</div></div>
-          <div class="stat"><div class="n">~260</div><div class="l">MB/s once<br>cached locally</div></div>
+          <div class="stat green"><div class="n">~12 s</div><div class="l">warm / local read<br>(beats S3-Icechunk)</div></div>
+          <div class="stat"><div class="n">~180</div><div class="l">MB/s reading the<br>full 2&nbsp;GB locally</div></div>
         </div>
         <table>
           <thead>
             <tr><th>Read path</th><th>Warm / local pin</th><th>Cold, gateway in region</th><th>Cold, no gateway</th></tr>
           </thead>
           <tbody>
-            <tr><td>IPFS via <code>http_storage</code></td><td class="win">~8 s</td><td class="win">~12.5 s</td><td>~655 s</td></tr>
+            <tr><td>IPFS via <code>http_storage</code></td><td class="win">~12 s</td><td class="win">~12.5 s</td><td>~655 s</td></tr>
             <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~14 s</td><td class="s3">~18 s</td><td>&mdash;</td></tr>
           </tbody>
           <caption>Warm/local reads are S3-class regardless of geography. Cold reads depend entirely on a Kubo gateway near the data: with one, IPFS matches or beats S3 even cross-Pacific (12.5 s vs 18 s, Singapore&rarr;us-east-1); without one, cold Bitswap falls off a cliff (~655 s). Pin near your readers or co-locate a gateway.</caption>
