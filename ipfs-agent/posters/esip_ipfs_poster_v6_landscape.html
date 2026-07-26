@@ -153,14 +153,14 @@
 
   /* ---------- META CORNER OVERLAY ("how we built this") ---------- */
   .metasnap {
-    position: absolute; top: 74px; right: 130px; z-index: 50;
-    transform: rotate(1.2deg);
-    width: 1180px;
-    background: #fffdf5; padding: 34px 40px;
+    position: absolute; left: 120px; bottom: 250px; z-index: 50;
+    transform: rotate(-1.2deg);
+    width: 1120px;
+    background: #fffdf5; padding: 30px 38px;
     border-radius: 16px;
     border: 3px solid #ffe6a1;
     box-sizing: border-box;
-    display: flex; flex-direction: row; align-items: center; gap: 36px;
+    display: flex; flex-direction: row; align-items: center; gap: 50px;
     box-shadow: 0 10px 30px rgba(90,60,0,0.10);
   }
   .metasnap::before {
@@ -171,7 +171,7 @@
   }
   .metasnap img {
     flex: 0 0 auto;
-    width: 260px; height: 564px; border-radius: 10px;
+    width: 200px; height: 434px; border-radius: 10px;
     border: 2px solid #d9c98f; display: block; object-fit: cover;
   }
   .metasnap-label {
@@ -308,14 +308,13 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
         </div>
         <table>
           <thead>
-            <tr><th>Read path</th><th>Same-region</th><th>Cross-region</th></tr>
+            <tr><th>Read path</th><th>Warm / local pin</th><th>Cold, gateway in region</th><th>Cold, no gateway</th></tr>
           </thead>
           <tbody>
-            <tr><td>IPFS local pin / warm</td><td class="win">~8 s</td><td class="win">~8 s</td></tr>
-            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~14 s</td><td class="s3">~14 s</td></tr>
-            <tr><td>IPFS cold, first pull</td><td>~75 s</td><td>~101 s</td></tr>
+            <tr><td>IPFS via <code>http_storage</code></td><td class="win">~8 s</td><td class="win">~12.5 s</td><td>~655 s</td></tr>
+            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~14 s</td><td class="s3">~18 s</td><td>&mdash;</td></tr>
           </tbody>
-          <caption>Only the first cross-network pull of the full 2&nbsp;GB is slow; it caches away and repeat reads beat S3. Pin near your readers (or co-locate a gateway) and IPFS delivers S3-class throughput.</caption>
+          <caption>Warm/local reads are S3-class regardless of geography. Cold reads depend entirely on a Kubo gateway near the data: with one, IPFS matches or beats S3 even cross-Pacific (12.5 s vs 18 s, Singapore&rarr;us-east-1); without one, cold Bitswap falls off a cliff (~655 s). Pin near your readers or co-locate a gateway.</caption>
         </table>
       </div>
 
