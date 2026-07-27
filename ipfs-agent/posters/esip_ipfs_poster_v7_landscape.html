@@ -48,13 +48,13 @@
   }
   .authorrow {
     margin-top: 26px;
-    display: flex; flex-direction: row;
+    display: flex; flex-direction: row; flex-wrap: wrap;
     align-items: center; justify-content: space-between;
-    gap: 60px;
+    gap: 30px 60px;
   }
   .authors {
-    display: flex; flex-direction: row; flex-wrap: nowrap;
-    align-items: baseline; gap: 64px;
+    display: flex; flex-direction: row; flex-wrap: wrap;
+    align-items: baseline; gap: 20px 64px;
     font-size: 44px; color: #1a2733; font-weight: 700;
   }
   .authors .person { white-space: nowrap; }
@@ -64,15 +64,11 @@
     letter-spacing: 0.5px;
   }
   .ff-badge {
-    flex: 0 0 auto; text-align: center;
+    flex: 0 0 auto; text-align: center; white-space: nowrap;
     background: #ffb524; color: #5a3c00;
-    font-size: 46px; font-weight: 800; letter-spacing: 1px;
+    font-size: 40px; font-weight: 800; letter-spacing: 1px;
     padding: 22px 44px; border-radius: 18px;
     line-height: 1.1;
-  }
-  .ff-badge span {
-    display: block; font-size: 30px; font-weight: 700;
-    letter-spacing: 0.5px; margin-top: 6px; color: #7a5100;
   }
 
   /* ---------- BODY GRID ---------- */
@@ -262,7 +258,7 @@
          <span class="person">Rich Signell<em>rsignell@gmail.com</em></span>
          <span class="person">Brian Terry<em>brian-b-terry@ama-inc.com</em></span>
        </div>
-       <div class="ff-badge">★ Funded by ESIP<span>Funding Friday Project</span></div>
+       <div class="ff-badge">★ An ESIP Funding Friday Project</div>
      </div>
   </header>
 
