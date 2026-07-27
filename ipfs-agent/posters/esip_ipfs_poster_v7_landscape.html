@@ -172,7 +172,7 @@
 
   /* ---------- META CORNER OVERLAY ("how we built this") ---------- */
   .metasnap {
-    position: absolute; left: 120px; bottom: 208px; z-index: 50;
+    position: absolute; left: 120px; bottom: 470px; z-index: 50;
     transform: rotate(-1.2deg);
     width: 1280px;
     background: #fffdf5; padding: 30px 38px;
@@ -216,13 +216,13 @@
   .footrow { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 90px; }
   .ackcell { flex: 1 1 auto; padding-right: 70px; }
   .qrcell { flex: 0 0 auto; }
-  .qrwrap { display: flex; flex-direction: row; justify-content: flex-end; align-items: flex-start; gap: 70px; }
+  .qrwrap { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 90px; }
   .qr { text-align: center; width: 360px; flex: 0 0 auto; }
   .qr + .qr { margin-left: 0; }
-  .qr img { width: 116px; height: 116px; display: block; border: 3px solid #cbd8e0;
-    border-radius: 10px; background: #fff; margin: 0 auto 6px; }
-  .qr-label { font-size: 28px; font-weight: 800; color: #0a6ea3; line-height: 1.1; white-space: nowrap; }
-  .qr-label span { display:block; font-size: 23px; font-weight: 600; color: #5a7184; margin-top: 3px; }
+  .qr img { width: 150px; height: 150px; display: block; border: 3px solid #cbd8e0;
+    border-radius: 10px; background: #fff; margin: 0 auto 8px; }
+  .qr-label { font-size: 32px; font-weight: 800; color: #0a6ea3; line-height: 1.1; white-space: nowrap; }
+  .qr-label span { display:block; font-size: 26px; font-weight: 600; color: #5a7184; margin-top: 4px; }
 
   /* ---------- FIGURES ---------- */
   .figcard { padding: 30px 30px 26px; }
@@ -320,6 +320,20 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
         <p style="margin-top:22px; font-size:42px;">Old CID &rarr; old snapshot (reproducibility). Dedup across versions comes free - edits reuse unchanged blocks.</p>
       </div>
 
+      <div class="card teal qrcard" style="text-align:center;">
+        <h2 style="text-align:center;">Run it yourself</h2>
+        <p class="lead" style="margin-bottom:20px;">Scan to open the live demo notebook and the full write-up.</p>
+         <div class="qrwrap">
+        <div class="qr">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAIcAQMAAACHMOU/AAAABlBMVEULKj3///9GLnjHAAAC2UlEQVR42u2dW2oDMQxFRTfg/e/SO5iS1iNdyQ4JpD9FZyhlms7cj8Dh6mXbrs+vaYgggggiiCDyvoj5Na7153j89n89HpvrQ/9vvDK/7A8uRBD5XyI/gIxFUtyY+SfrwxnP11dgB5HG7Cw3uW/cfcKbRpiVPgk7iMCOE/Eboa0gbUhcNyJQhB1EYKey47zMBcszZGAHEdjR5KUkOJLU3H5EvoMIIs6OX2I9L37kFdhBpC07egVEbkmS+KwywiiFbr5YRHrnO2ZKSqQ5M1DysC2ehx1EmvuOY2KmsITjHKM7YjZEmrMzc5wmZeqCldYWInKDHUQas6M90IPpaLd0yrsT30GEfMc0HkuOI6Fa9H20iA07iDTOdwKHErnJzT6Qg+8gQsxWygJKRwAlwZs/hu8g0jxmSzOf3tDRNQhl/EA8C3YQ6RyzVX9RS5op2fE6dixVgB1E2vpO4UKrbQrOVde+ke8gQszmkZi7SSLrkkqChnPkO4hQK5hbkDbS4uvjjAFz1IgQsx0m2bSqdqWyW1rOAzuItI/ZtNGz5zV7JYH+DiKwo1t8pFrBNoqjcEXDFHYQ6ZzvXKl3k0c9LS3YmVY20oEdRPAdD8miiTNPrNXyAl8sIn3ZsdzBSYXrUVzG6noE2EGkLTuW9vxMFYNceSsBG/kOIrCz7o/79D5bBEetABHYyf4SvR53orzmutYQYAeR3uyov+hihLTFR1klZ/R3EKFWkCIxz4DqKM5Mszr4DiKwc165M+oIaPEd8h1EYKfcvNiv4I7WmGdDpDk7ZV9QrQPswZsaE/NsiFAriMRfXSZ3SFOyI+1U2EGkeb5TGdm21dUzRNI4KOwg0jvfSeusx1ZAMEvnWJnJaSN8sYjATh5gKzt7jOt4NhzsIAI7KYspJ43qSXClzgA7iJDvSEPnuIV79SbyHUSas+OXHiRqZltDJ83t4DuItGfn02sigggiiCCCyJsi39RAU8r6ieUOAAAAAElFTkSuQmCC" alt="QR code to the ERA5 demo notebook">
+          <div class="qr-label">Demo notebook<span>read ERA5 from IPFS</span></div>
+        </div>
+        <div class="qr">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAHsAQMAAAAq5AwjAAAABlBMVEULKj3///9GLnjHAAACcUlEQVR42u2dUU4DMQxELS6Q+98yNwiUbu2xF/FTCWHrraqqLHl8RLPuxLGDnXeubeDg4ODg/x83v9Z5vMziL+/HzRi50uCzP+ytCxz87/FLyc/rW8aX8h8ffIA/DqsMZubBu2reVX3p+SX1FOHXqYPRPHh/zbu3KV8BHv/RPPg0zX/dcSdvYuZ3MvxoHnyMn78MzPNX23yNrN4GPw/eXvMlb/P7i7wNeH/N66VPQbqzfkx1MvPgjb1NGHWJ+aH2beHqnULz4H01vy8DnyL/lkXuClf/HE+cB++et7mykeHVzR8ED++qfDQP3t3Pa8bGxf/DbuzrHc2Dt9Z8knepsdE17E76R/PgA/I2abmaS85KJoc4D97Yz4uZ9yWtbkhp+WXen2XmwRtr3mvJ9EMK9aXwEs2Dd9Z8Kh6WIG+Sq0ybsKxhwVtrfiWXHqE+Z+xLBQKaB5/h51X/tUlEHgG8DXj3OB/JmZuf167ACPjEefDu3kY3YdXS79sw4jz4oD2p1FSuOcmTiuqleYqZB++q+ZKfL4nKmuQx8vPg7dewEcN//wrQ/VlqD8Cn+PmygI33c/ShIM6D99a8N3qv2hhb96QkpYnmwbuvYaOQXmxPqrpc1JiBT8vb6Cas+nxtLZGzzph58MZr2NonJckcPehJf0Tz4H3jvHZLRb2Ztr4eqUwgPw8+Is5HAN+1SSQd3EcPOPiwc4lvDYDl0IO0LYXmwdtqPuSdDY+Vsz70GwHNg4/QfDmL9db0bXoTzYNP0HxuD1T3brcjEdA8+AQ/n1u/43CnRZ8U+Ni8jdsYPXZeK+rlcWDmwVtqnn8/Bw4ODj4X/wSIVz178JbqbwAAAABJRU5ErkJggg==" alt="QR code to the final report">
+          <div class="qr-label">Final report<span>full write-up</span></div>
+        </div>
+         </div>
+      </div>
     </div>
 
     <!-- COLUMN 3 -->
@@ -357,7 +371,7 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
         <h2>Bottom Line</h2>
         <p><b>IPFS is a practical preservation layer for cloud-native Earth data - today.</b> Convert in one command, pin it on a cooperating organization's IPFS node or a commercial pinning service, re-open in xarray. Your data becomes content-addressed, takedown-resistant, and reproducible - and it reads back fast enough for real analysis.</p>
         <p style="font-size:40px;">Live demo &amp; notebooks: <b>github.com/ESIPFed/coded-blog</b> (see <b>ipfs-agent/</b>)</p>
-        <p class="scan">Scan the codes below to run it yourself &rarr;</p>
+        <p class="scan">Scan the QR codes (center column) to run it yourself &rarr;</p>
       </div>
 
     </div>
@@ -368,18 +382,6 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
     <div class="footrow">
       <div class="ackcell">
         <div class="ack"><b>Acknowledgements:</b> This work was carried out by <b>chatting with an OpenClaw AI agent over Telegram</b> (AWS VM, Claude via Amazon Bedrock) - the team steered; the agent ran the benchmarks, provisioned &amp; tore down nodes, and drafted the figures. Thanks to AWS for the ESIP Credits!</div>
-      </div>
-      <div class="qrcell">
-         <div class="qrwrap">
-        <div class="qr">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAIcAQMAAACHMOU/AAAABlBMVEULKj3///9GLnjHAAAC2UlEQVR42u2dW2oDMQxFRTfg/e/SO5iS1iNdyQ4JpD9FZyhlms7cj8Dh6mXbrs+vaYgggggiiCDyvoj5Na7153j89n89HpvrQ/9vvDK/7A8uRBD5XyI/gIxFUtyY+SfrwxnP11dgB5HG7Cw3uW/cfcKbRpiVPgk7iMCOE/Eboa0gbUhcNyJQhB1EYKey47zMBcszZGAHEdjR5KUkOJLU3H5EvoMIIs6OX2I9L37kFdhBpC07egVEbkmS+KwywiiFbr5YRHrnO2ZKSqQ5M1DysC2ehx1EmvuOY2KmsITjHKM7YjZEmrMzc5wmZeqCldYWInKDHUQas6M90IPpaLd0yrsT30GEfMc0HkuOI6Fa9H20iA07iDTOdwKHErnJzT6Qg+8gQsxWygJKRwAlwZs/hu8g0jxmSzOf3tDRNQhl/EA8C3YQ6RyzVX9RS5op2fE6dixVgB1E2vpO4UKrbQrOVde+ke8gQszmkZi7SSLrkkqChnPkO4hQK5hbkDbS4uvjjAFz1IgQsx0m2bSqdqWyW1rOAzuItI/ZtNGz5zV7JYH+DiKwo1t8pFrBNoqjcEXDFHYQ6ZzvXKl3k0c9LS3YmVY20oEdRPAdD8miiTNPrNXyAl8sIn3ZsdzBSYXrUVzG6noE2EGkLTuW9vxMFYNceSsBG/kOIrCz7o/79D5bBEetABHYyf4SvR53orzmutYQYAeR3uyov+hihLTFR1klZ/R3EKFWkCIxz4DqKM5Mszr4DiKwc165M+oIaPEd8h1EYKfcvNiv4I7WmGdDpDk7ZV9QrQPswZsaE/NsiFAriMRfXSZ3SFOyI+1U2EGkeb5TGdm21dUzRNI4KOwg0jvfSeusx1ZAMEvnWJnJaSN8sYjATh5gKzt7jOt4NhzsIAI7KYspJ43qSXClzgA7iJDvSEPnuIV79SbyHUSas+OXHiRqZltDJ83t4DuItGfn02sigggiiCCCyJsi39RAU8r6ieUOAAAAAElFTkSuQmCC" alt="QR code to the ERA5 demo notebook">
-          <div class="qr-label">Demo notebook<span>read ERA5 from IPFS</span></div>
-        </div>
-        <div class="qr">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAHsAQMAAAAq5AwjAAAABlBMVEULKj3///9GLnjHAAACcUlEQVR42u2dUU4DMQxELS6Q+98yNwiUbu2xF/FTCWHrraqqLHl8RLPuxLGDnXeubeDg4ODg/x83v9Z5vMziL+/HzRi50uCzP+ytCxz87/FLyc/rW8aX8h8ffIA/DqsMZubBu2reVX3p+SX1FOHXqYPRPHh/zbu3KV8BHv/RPPg0zX/dcSdvYuZ3MvxoHnyMn78MzPNX23yNrN4GPw/eXvMlb/P7i7wNeH/N66VPQbqzfkx1MvPgjb1NGHWJ+aH2beHqnULz4H01vy8DnyL/lkXuClf/HE+cB++et7mykeHVzR8ED++qfDQP3t3Pa8bGxf/DbuzrHc2Dt9Z8knepsdE17E76R/PgA/I2abmaS85KJoc4D97Yz4uZ9yWtbkhp+WXen2XmwRtr3mvJ9EMK9aXwEs2Dd9Z8Kh6WIG+Sq0ybsKxhwVtrfiWXHqE+Z+xLBQKaB5/h51X/tUlEHgG8DXj3OB/JmZuf167ACPjEefDu3kY3YdXS79sw4jz4oD2p1FSuOcmTiuqleYqZB++q+ZKfL4nKmuQx8vPg7dewEcN//wrQ/VlqD8Cn+PmygI33c/ShIM6D99a8N3qv2hhb96QkpYnmwbuvYaOQXmxPqrpc1JiBT8vb6Cas+nxtLZGzzph58MZr2NonJckcPehJf0Tz4H3jvHZLRb2Ztr4eqUwgPw8+Is5HAN+1SSQd3EcPOPiwc4lvDYDl0IO0LYXmwdtqPuSdDY+Vsz70GwHNg4/QfDmL9db0bXoTzYNP0HxuD1T3brcjEdA8+AQ/n1u/43CnRZ8U+Ni8jdsYPXZeK+rlcWDmwVtqnn8/Bw4ODj4X/wSIVz178JbqbwAAAABJRU5ErkJggg==" alt="QR code to the final report">
-          <div class="qr-label">Final report<span>full write-up</span></div>
-        </div>
-         </div>
       </div>
     </div>
     <footer>
