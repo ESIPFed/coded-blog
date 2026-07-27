@@ -296,7 +296,7 @@ cid=$(ipfs add -rQ --cid-version=1 my.icechunk/)
         </div>
         <p style="margin-top:22px; font-size:42px;">The <b>CID is a hash of the data</b> — tamper-evident and location-independent. Our live ERA5 store:</p>
         <p style="margin-top:12px; font-size:34px; font-family:'SF Mono',Menlo,Consolas,monospace; color:#0a6ea3; overflow-wrap:anywhere;">ipfs://bafybeiecltl3mtags2i3jeumxe5c7zuvj2r76zxwxg6tfljiouvywqzbaq</p>
-        <p style="margin-top:16px; font-size:38px;"><b>One CID = the whole queryable store.</b> Re-chunked to 100 blocks (5 timesteps each) to fit the free-tier pin budget - <b>data byte-identical</b>.</p>
+        <p style="margin-top:16px; font-size:38px;"><b>One CID = the whole queryable store</b> - 100 blocks, byte-identical to the source.</p>
       </div>
 
       <div class="card teal">
@@ -338,21 +338,21 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
 
       <div class="card">
         <h2>&hellip; and it&rsquo;s performant enough</h2>
-        <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> temperature field (100 Icechunk blocks) over IPFS via <code>http_storage</code>, against a <b>native Icechunk-on-S3</b> baseline. Every read path returns the identical area-weighted mean temperature (<b>286.51&nbsp;K</b>) - proof the bytes are the same no matter how you fetch them.</p>
+        <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> temperature field three ways from <b>Singapore</b>, with the data pinned in <b>us-east-1</b> - a real cross-Pacific test. All paths return the identical area-weighted mean temperature (<b>286.51&nbsp;K</b>), proving the bytes are the same no matter how you fetch them.</p>
         <div class="bignum">
-          <div class="stat green"><div class="n">~12 s</div><div class="l">full 2&nbsp;GB read,<br>warm / local pin</div></div>
-          <div class="stat"><div class="n">~180</div><div class="l">MB/s reading the<br>full 2&nbsp;GB locally</div></div>
+          <div class="stat green"><div class="n">~12 s</div><div class="l">2&nbsp;GB via a Kubo<br>gateway (beats S3)</div></div>
+          <div class="stat"><div class="n">~167</div><div class="l">MB/s over IPFS -<br>vs 113 MB/s on S3</div></div>
         </div>
         <table>
           <thead>
-            <tr><th>2&nbsp;GB read path</th><th>Same region / warm</th><th>Cross-Pacific cold<br>(Singapore &rarr; us-east-1)</th></tr>
+            <tr><th>2&nbsp;GB cold read, Singapore &rarr; us-east-1</th><th>Time</th><th>Speed</th></tr>
           </thead>
           <tbody>
-            <tr><td>IPFS, dedicated Kubo gateway</td><td class="win">~12 s</td><td class="win">~12.5 s</td></tr>
-            <tr><td>IPFS, no gateway (raw Bitswap)</td><td class="win">~12 s</td><td>~655 s</td></tr>
-            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~14 s</td><td class="s3">~18 s</td></tr>
+            <tr><td>IPFS via dedicated Kubo gateway (HTTP)</td><td class="win">~12.5 s</td><td class="win">167 MB/s</td></tr>
+            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~18.4 s</td><td class="s3">113 MB/s</td></tr>
+            <tr><td>IPFS, no gateway (raw Bitswap)</td><td>~655 s</td><td>3.2 MB/s</td></tr>
           </tbody>
-          <caption>With a Kubo gateway near the data, IPFS matches or beats S3 even cross-Pacific (12.5 s vs 18 s). Without one, a cold reader falls back to peer-to-peer Bitswap and pays for it (~655 s). Lesson: pin near your readers, or co-locate a gateway.</caption>
+          <caption>One workload, three backends, all cold from Singapore. With a Kubo gateway near the data, IPFS beats S3 by ~50% even cross-Pacific. Without a gateway, a cold reader falls back to peer-to-peer Bitswap and pays for it (~655 s). Lesson: pin near your readers, or co-locate a gateway.</caption>
         </table>
       </div>
 
