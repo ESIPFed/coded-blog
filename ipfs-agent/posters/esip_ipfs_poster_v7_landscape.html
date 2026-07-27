@@ -48,16 +48,16 @@
   }
   .authorrow {
     margin-top: 26px;
-    display: flex; flex-direction: row; flex-wrap: wrap;
+    display: flex; flex-direction: row; flex-wrap: nowrap;
     align-items: center; justify-content: space-between;
-    gap: 30px 60px;
+    gap: 40px;
   }
   .authors {
-    display: flex; flex-direction: row; flex-wrap: wrap;
-    align-items: baseline; gap: 20px 64px;
-    font-size: 44px; color: #1a2733; font-weight: 700;
+    display: block; flex-shrink: 0;
+    font-size: 40px; color: #1a2733; font-weight: 700;
   }
-  .authors .person { white-space: nowrap; }
+  .authors .person { white-space: nowrap; margin-right: 44px; display: inline-block; vertical-align: top; }
+  .authors .person:last-child { margin-right: 0; }
   .authors .person em {
     display: block; font-style: normal; font-weight: 500;
     font-size: 34px; color: #5a7184; margin-top: 4px;
@@ -66,8 +66,8 @@
   .ff-badge {
     flex: 0 0 auto; text-align: center; white-space: nowrap;
     background: #ffb524; color: #5a3c00;
-    font-size: 40px; font-weight: 800; letter-spacing: 1px;
-    padding: 22px 44px; border-radius: 18px;
+    font-size: 34px; font-weight: 800; letter-spacing: 0.5px;
+    padding: 20px 36px; border-radius: 18px;
     line-height: 1.1;
   }
 
