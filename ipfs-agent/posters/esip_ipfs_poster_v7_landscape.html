@@ -341,18 +341,18 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
         <p class="lead">We read the <b>same 2.08&nbsp;GB ERA5</b> temperature field three ways from <b>Singapore</b>, with the data pinned in <b>us-east-1</b> - a real cross-Pacific test. All paths return the identical area-weighted mean temperature (<b>286.51&nbsp;K</b>), proving the bytes are the same no matter how you fetch them.</p>
         <div class="bignum">
           <div class="stat green"><div class="n">~12 s</div><div class="l">2&nbsp;GB via a Kubo<br>gateway (beats S3)</div></div>
-          <div class="stat"><div class="n">~167</div><div class="l">MB/s over IPFS -<br>vs 113 MB/s on S3</div></div>
+          <div class="stat"><div class="n">~167</div><div class="l">MB/s over HTTP -<br>vs 113 MB/s on S3</div></div>
         </div>
         <table>
           <thead>
             <tr><th>2&nbsp;GB cold read, Singapore &rarr; us-east-1</th><th>Time</th><th>Speed</th></tr>
           </thead>
           <tbody>
-            <tr><td>IPFS via dedicated Kubo gateway (HTTP)</td><td class="win">~12.5 s</td><td class="win">167 MB/s</td></tr>
+            <tr><td>IPFS gateway, retrieval over <b>HTTP</b></td><td class="win">~12.5 s</td><td class="win">167 MB/s</td></tr>
             <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~18.4 s</td><td class="s3">113 MB/s</td></tr>
-            <tr><td>IPFS, no gateway (raw Bitswap)</td><td>~655 s</td><td>3.2 MB/s</td></tr>
+            <tr><td>Retrieval over the <b>IPFS network</b> (no gateway)</td><td>~655 s</td><td>3.2 MB/s</td></tr>
           </tbody>
-          <caption>One workload, three backends, all cold from Singapore. With a Kubo gateway near the data, IPFS beats S3 by ~50% even cross-Pacific. Without a gateway, a cold reader falls back to peer-to-peer Bitswap and pays for it (~655 s). Lesson: pin near your readers, or co-locate a gateway.</caption>
+          <caption>One workload, three backends, all cold from Singapore. Retrieved over <b>HTTP</b> from a Kubo gateway near the data, IPFS beats S3 by ~50% even cross-Pacific. Retrieved peer-to-peer over the <b>IPFS network</b> with no nearby node, a cold reader pays for every round-trip (~655 s). Speed comes from a well-placed gateway, not from the P2P transport itself.</caption>
         </table>
       </div>
 
@@ -367,7 +367,7 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
 
       <div class="takeaway">
         <h2>Bottom Line</h2>
-        <p><b>IPFS is a practical preservation layer for cloud-native Earth data - today.</b> Convert in one command, pin it on a cooperating organization's IPFS node or a commercial pinning service, re-open in xarray. Your data becomes content-addressed, takedown-resistant, and reproducible - and it reads back fast enough for real analysis.</p>
+        <p><b>For geospatial data, peer-to-peer&rsquo;s win is resilience, not transfer speed.</b> Content addressing gives takedown-resistance, integrity, and no single point of failure - many nodes can serve one CID. Speed still comes from an <b>HTTP gateway</b> near the data (matching or beating S3); the bare <b>IPFS network</b> is slower. Use IPFS to make data <i>durable</i>; run a gateway where you need it <i>fast</i>.</p>
         <p style="font-size:40px;">Live demo &amp; notebooks: <b>github.com/ESIPFed/coded-blog</b> (see <b>ipfs-agent/</b>)</p>
       </div>
 
