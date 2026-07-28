@@ -110,11 +110,12 @@
   code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; background:#eef3f6; padding: 2px 12px; border-radius: 8px; }
 
   /* ---------- TABLE ---------- */
-  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; table-layout: fixed; }
   th, td {
     font-size: 40px; text-align: left;
     padding: 18px 20px; border-bottom: 3px solid #dde6ec;
   }
+  th:not(:first-child), td:not(:first-child) { text-align: right; white-space: nowrap; width: 22%; }
   th {
     background: #eaf3f8; color: #0b2a3d; font-weight: 800;
     font-size: 40px;
