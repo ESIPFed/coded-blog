@@ -348,9 +348,9 @@ ds      = xr.open_zarr(repo.readonly_session(<span class="kw">"main"</span>).sto
             <tr><th>2&nbsp;GB cold read, Singapore &rarr; us-east-1</th><th>Time</th><th>Speed</th></tr>
           </thead>
           <tbody>
-            <tr><td>IPFS gateway, retrieval over <b>HTTP</b></td><td class="win">~12.5 s</td><td class="win">167 MB/s</td></tr>
-            <tr><td>Icechunk-on-S3 (baseline)</td><td class="s3">~18.4 s</td><td class="s3">113 MB/s</td></tr>
-            <tr><td>Retrieval over the <b>IPFS network</b> (no gateway)</td><td>~655 s</td><td>3.2 MB/s</td></tr>
+            <tr><td>IPFS, retrieval over <b>HTTP gateway</b></td><td class="win">~12.5 s</td><td class="win">167 MB/s</td></tr>
+            <tr><td>Baseline (Icechunk over S3)</td><td class="s3">~18.4 s</td><td class="s3">113 MB/s</td></tr>
+            <tr><td>Retrieval over <b>IPFS Network</b></td><td>~655 s</td><td>3.2 MB/s</td></tr>
           </tbody>
           <caption>One workload, three backends, all cold from Singapore. Retrieved over <b>HTTP</b> from a Kubo gateway near the data, IPFS beats S3 by ~50% even cross-Pacific. Retrieved peer-to-peer over the <b>IPFS network</b> with no nearby node, a cold reader pays for every round-trip (~655 s). Speed comes from a well-placed gateway, not from the P2P transport itself.</caption>
         </table>
