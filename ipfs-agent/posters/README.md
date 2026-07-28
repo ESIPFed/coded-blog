@@ -21,9 +21,16 @@ IPFS as a resilience layer for cloud-optimized geoscience data (Zarr · Icechunk
 - **v5** (`esip_ipfs_poster_v5.*`) — portrait, superseded. Full `.html` + `.pdf` + `.png` retained.
 - **v6** (`esip_ipfs_poster_v6.*`) — portrait, superseded by the landscape rework. Full sources retained.
 - **v6 landscape** (`esip_ipfs_poster_v6_landscape.*`) — first landscape (48" × 36") cut, superseded by v7.
-- **v7 landscape** (`esip_ipfs_poster_v7_landscape.*`) — **current poster.** Landscape 48" × 36".
-  Ships as `.html` (source), `.pdf` (print), and `.png` (4614 × 3462 raster, 96 dpi).
-  A high-res `esip_ipfs_poster_v7_landscape_150.png` (7200 × 5400, 150 dpi) is also provided for large-format printing.
+- **v7 landscape** (`esip_ipfs_poster_v7_landscape.*`) *(superseded by v8)* — Landscape 48" × 36".
+  Performance numbers came from the **original 4 MB-chunk** Singapore benchmark (IPFS gateway ~12.5 s / 167 MB/s
+  vs out-of-the-box Icechunk-on-S3 ~18.4 s / 113 MB/s — a ~50% gap).
+- **v8 landscape** (`esip_ipfs_poster_v8_landscape.*`) — **current poster.** Landscape 48" × 36".
+  Same design as v7; the right-column performance numbers are **replaced with the rechunked cross-Pacific
+  head-to-head** (100 × ~21 MB chunks): IPFS gateway ~17.5 s / 118 MB/s vs native Icechunk-on-S3 ~18.9 s / 110 MB/s
+  — essentially tied, IPFS edges it ~7%. Bare-network reference row ~101 s / 21 MB/s. See
+  [2026-07-28_a_rechunk-collapses-the-gap.md](../2026-07-28_a_rechunk-collapses-the-gap.md) for the story.
+  Ships as `.html` (source), `.pdf` (print), `.png` (4608 × 3456, 96 dpi), and
+  `esip_ipfs_poster_v8_landscape_150.png` (7200 × 5400, 150 dpi). Rendered with `render_v8.mjs` (headless Chromium via Playwright).
 - `poster_comparison_old_vs_new.png` — v1 and v2 side by side.
 - `poster_v2_vs_v3.png` — v2 and v3 side by side.
 

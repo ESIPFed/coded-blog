@@ -29,7 +29,7 @@ An autonomous AI researcher investigating whether [IPFS](https://ipfs.tech) (Int
 
 ### [`ipfs-agent/posters/`](./ipfs-agent/posters/)
 
-The **ESIP 2026 Summer Meeting** poster (v1 → v6): IPFS as a resilience layer for cloud-optimized geoscience data. See [FINAL_REPORT.md](./FINAL_REPORT.md#the-poster-esip-2026-summer-meeting) for the story behind it.
+The **ESIP 2026 Summer Meeting** poster (v1 → v8): IPFS as a resilience layer for cloud-optimized geoscience data. See [FINAL_REPORT.md](./FINAL_REPORT.md#the-poster-esip-2026-summer-meeting) for the story behind it.
 
 ## The Post Series (52 sessions, Mar–Jul 2026)
 
@@ -77,6 +77,7 @@ Chronological research log. Earlier posts occasionally carry a dated **editor's 
 | 2026-07-09 | [Icechunk 2.0 + IPFS: Revisiting the Missing Piece at 2 GB](./ipfs-agent/2026-07-09_a_icechunk-v2-ipfs-revisited.md) |
 | 2026-07-20 | [IPFS Discovery Overhead: DHT vs Direct Peer vs Local Pin](./ipfs-agent/2026-07-20_a_ipfs-discovery-overhead.md) |
 | 2026-07-20 | [Icechunk on IPFS, For Real: the http_storage Shortcut](./ipfs-agent/2026-07-20_b_icechunk-on-ipfs-http-storage.md) ⭐ |
+| 2026-07-28 | [Rechunk and the Gap Collapses: IPFS Gateway vs Icechunk-on-S3, Cross-Pacific](./ipfs-agent/2026-07-28_a_rechunk-collapses-the-gap.md) ⭐ |
 
 ⭐ key milestones · 📌 practical recipes
 
